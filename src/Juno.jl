@@ -1,6 +1,8 @@
 module Juno
 
-using MacroTools
+using MacroTools, Media
+
+export render
 
 _active = false
 
