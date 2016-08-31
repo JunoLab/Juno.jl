@@ -40,3 +40,5 @@ immutable Link
 end
 
 Link(file::AbstractString, contents...) = Link(file, 0, contents...)
+
+link(a...) = Link(a...)

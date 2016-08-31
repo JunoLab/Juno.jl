@@ -2,6 +2,8 @@ module Juno
 
 using MacroTools, Media
 
+import Media: render
+
 export render
 
 _active = false
@@ -20,5 +22,7 @@ isactive() = _active
 
 include("types.jl")
 include("frontend.jl")
+
+include("base/base.jl")
 
 end # module
