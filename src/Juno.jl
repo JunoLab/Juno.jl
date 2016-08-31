@@ -1,5 +1,7 @@
 module Juno
 
+using MacroTools
+
 _active = false
 
 activate() = @eval using Atom
@@ -13,5 +15,8 @@ Will return `true` when the current Julia process is connected to a running Juno
 frontend.
 """
 isactive() = _active
+
+include("types.jl")
+include("frontend.jl")
 
 end # module
