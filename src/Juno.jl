@@ -2,12 +2,9 @@ module Juno
 
 _active = false
 
-function activate()
-  @eval using Atom
-  activate(true)
-end
+activate() = @eval using Atom
 
-activate(active) = (global _active = active)
+setactive!(active) = (global _active = active)
 
 """
     isactive()
