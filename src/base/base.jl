@@ -1,3 +1,6 @@
+using Hiccup
+c(a...) = Any[a...]
+
 # Editor-specific
 
 render(e::Editor, ::Void) =
@@ -34,3 +37,5 @@ end
 
 render(::Console, x::Expr) =
   Atom.msg("result", Dict(:type => :code, :text => string(x)))
+
+include("methods.jl")
