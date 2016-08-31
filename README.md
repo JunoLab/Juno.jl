@@ -1,7 +1,8 @@
-# Juno
+# Juno.jl
 
-[![Build Status](https://travis-ci.org/MikeInnes/Juno.jl.svg?branch=master)](https://travis-ci.org/MikeInnes/Juno.jl)
+This package defines Juno's frontend API. It is aimed primarily at allowing package authors to:
 
-[![Coverage Status](https://coveralls.io/repos/MikeInnes/Juno.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/MikeInnes/Juno.jl?branch=master)
+* Integrate with Juno's display system to define custom output for graphics and data structures
+* Take advantage of frontend features (like showing progress metres or asking for user input) with appropriate fallbacks in other environments
 
-[![codecov.io](http://codecov.io/github/MikeInnes/Juno.jl/coverage.svg?branch=master)](http://codecov.io/github/MikeInnes/Juno.jl?branch=master)
+All while having only a small, pure Julia dependency (this package) as opposed to the entire Atom.jl tree.
