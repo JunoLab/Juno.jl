@@ -6,6 +6,14 @@ type Clipboard end
 type Editor end
 type Console end
 
+render(::Clipboard, x) = stringmime(MIME"text/plain"(), x)
+
+render(::Editor, x) =
+  render(Inline(), Copyable(x))
+
+render(::Console, x) =
+  Atom.msg("result", render(Inline(), Copyable(x)))
+
 # View data structures
 
 type Model

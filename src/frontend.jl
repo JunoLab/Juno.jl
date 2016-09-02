@@ -29,7 +29,7 @@ with this one.
 info(msg) = (isactive() ? Atom : Base).info(msg)
 
 """
-  @progress for i = ...
+    @progress for i = ...
 
 Show a progress metre for the given loop if possible.
 """

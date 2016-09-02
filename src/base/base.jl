@@ -1,26 +1,10 @@
 using Hiccup
 c(a...) = Any[a...]
 
-# Editor-specific
-
 render(e::Editor, ::Void) =
   render(e, Atom.icon("check"))
 
-render(::Editor, x) =
-  render(Inline(), Copyable(x))
-
-# Console-specific
-
-render(::Console, x) =
-  Atom.msg("result", render(Inline(), Copyable(x)))
-
 render(::Console, ::Void) = nothing
-
-# Clipboard-specific
-
-render(::Clipboard, x) = stringmime(MIME"text/plain"(), x)
-
-# Objects
 
 render(::Inline, x::AbstractFloat) =
   isnan(x) || isinf(x) ?
