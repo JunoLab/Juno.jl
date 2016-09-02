@@ -23,7 +23,7 @@ render(::Console, x::Expr) =
   Atom.msg("result", Dict(:type => :code, :text => string(x)))
 
 @render Inline x::Text begin
-  ls = split(string(x), "\n")
+  ls = split(chomp(string(x)), "\n")
   length(ls) > 1 ?
     Tree(Model(ls[1]), c(Model(join(ls[2:end], "\n")))) :
     span(ls[1])
