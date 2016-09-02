@@ -5,6 +5,7 @@ type Clipboard end
 
 type Editor end
 type Console end
+type PlotPane end
 
 render(::Clipboard, x) = stringmime(MIME"text/plain"(), x)
 
@@ -13,6 +14,9 @@ render(::Editor, x) =
 
 render(::Console, x) =
   Atom.msg("result", render(Inline(), Copyable(x)))
+
+render(::PlotPane, x) =
+  Atom.msg("plot", render(Inline(), x))
 
 # View data structures
 
