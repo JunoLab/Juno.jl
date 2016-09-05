@@ -83,6 +83,11 @@ end
   span(c(render(i, real(x)), " + ", render(i, imag(x)), "im"))
 end
 
+@render Inline p::Ptr begin
+  Line(Atom.fade(string(typeof(p))), Text(" @"),
+       span(".constant.number", c("0x$(hex(UInt(p), Sys.WORD_SIZE>>2))")))
+end
+
 @render i::Inline x::AbstractString begin
   span(".string", c(render(i, Text(stringmime("text/plain", x)))))
 end
