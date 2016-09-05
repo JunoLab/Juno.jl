@@ -29,6 +29,11 @@ immutable Tree
   children::Vector{Any}
 end
 
+immutable LazyTree
+  head
+  children::Function
+end
+
 immutable SubTree
   label
   child
