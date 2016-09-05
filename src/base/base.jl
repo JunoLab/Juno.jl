@@ -61,6 +61,10 @@ end
          children)
 end
 
+@render Inline xs::Array begin
+  Text(sprint(io -> show(IOContext(io, limit=true), MIME"text/plain"(), xs)))
+end
+
 @render i::Inline d::Dict begin
   j = 0
   st = Array{Atom.SubTree}(0)
