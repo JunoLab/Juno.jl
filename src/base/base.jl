@@ -30,10 +30,11 @@ render(::Console, x::Expr) =
 end
 
 @render Inline x begin
-  if isbits(x)
-    span(c(Atom.fade(string(typeof(x))), " ", string(x)))
+  fields = fieldnames(typeof(x))
+  if isempty(fields)
+    span(c(render(Inline(), typeof(x)), "()"))
   else
-    Text(stringmime("text/plain", x))
+    LazyTree(typeof(x), () -> [SubTree(Text("$f → "), getfield(x, f)) for f in fields])
   end
 end
 
