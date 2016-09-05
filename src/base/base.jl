@@ -42,6 +42,8 @@ end
 
 @render Inline x::Module span(".keyword.other", string(x))
 
+@render Inline x::Symbol span(".constant.other.symbol", ":$x")
+
 import Base.Docs: doc
 
 isanon(f) = contains(string(f), "#")
