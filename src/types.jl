@@ -59,3 +59,12 @@ end
 Link(file::AbstractString, contents...) = Link(file, 0, contents...)
 
 link(a...) = Link(a...)
+
+type Line
+  xs::Vector{Any}
+  Line(xs...) = new(collect(xs))
+end
+
+@render Inline l::Line begin
+  span([render(Inline(), x) for x in l.xs])
+end
