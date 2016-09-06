@@ -4,7 +4,7 @@ using MacroTools, Media
 
 import Media: render
 
-export Media, render, @render
+export Media, media, render, @render
 
 _active = false
 
