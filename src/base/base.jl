@@ -1,5 +1,4 @@
 using Hiccup
-c(a...) = Any[a...]
 
 render(e::Editor, ::Void) =
   render(e, Atom.icon("check"))
