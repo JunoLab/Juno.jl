@@ -45,6 +45,8 @@ end
 
 @render Inline x::Symbol span(".constant.other.symbol", ":$x")
 
+@render Inline _::Void span(".constant", "nothing")
+
 import Base.Docs: doc
 
 isanon(f) = contains(string(f), "#")
