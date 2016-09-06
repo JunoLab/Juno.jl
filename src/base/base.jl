@@ -83,7 +83,7 @@ end
 end
 
 @render Inline p::Ptr begin
-  Line(Atom.fade(string(typeof(p))), Text(" @"),
+  Row(Atom.fade(string(typeof(p))), Text(" @"),
        span(".constant.number", c("0x$(hex(UInt(p), Sys.WORD_SIZE>>2))")))
 end
 

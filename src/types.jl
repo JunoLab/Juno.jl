@@ -60,11 +60,11 @@ Link(file::AbstractString, contents...) = Link(file, 0, contents...)
 
 link(a...) = Link(a...)
 
-type Line
+type Row
   xs::Vector{Any}
-  Line(xs...) = new(collect(xs))
+  Row(xs...) = new(collect(xs))
 end
 
-@render Inline l::Line begin
+@render Inline l::Row begin
   span([render(Inline(), x) for x in l.xs])
 end
