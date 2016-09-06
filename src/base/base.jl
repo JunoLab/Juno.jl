@@ -28,12 +28,14 @@ render(::Console, x::Expr) =
     span(ls[1])
 end
 
+getfield′(x, f) = isdefined(x, f) ? getfield(x, f) : fade("#undef#")
+
 @render Inline x begin
   fields = fieldnames(typeof(x))
   if isempty(fields)
     span(c(render(Inline(), typeof(x)), "()"))
   else
-    LazyTree(typeof(x), () -> [SubTree(Text("$f → "), getfield(x, f)) for f in fields])
+    LazyTree(typeof(x), () -> [SubTree(Text("$f → "), getfield′(x, f)) for f in fields])
   end
 end
 
