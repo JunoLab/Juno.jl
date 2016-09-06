@@ -21,6 +21,7 @@ frontend.
 isactive() = _active
 
 include("types.jl")
+include("utils.jl")
 include("frontend.jl")
 
 include("base/base.jl")
