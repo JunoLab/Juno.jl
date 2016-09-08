@@ -1,5 +1,9 @@
 using Hiccup
 
+view(x) =
+  d(:type    => :html,
+    :content => stringmime(MIME"text/html"(), x))
+
 render(e::Editor, ::Void) =
   render(e, Atom.icon("check"))
 
