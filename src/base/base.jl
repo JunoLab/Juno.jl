@@ -83,7 +83,8 @@ end
 @render Inline x::Number span(".constant.number", sprint(show, x))
 
 @render i::Inline x::Complex begin
-  span(c(render(i, real(x)), " + ", render(i, imag(x)), "im"))
+  re, ima = reim(x)
+  span(c(render(i, re), signbit(ima) ? " - " : " + ", render(i, abs(ima)), "im"))
 end
 
 @render Inline p::Ptr begin
