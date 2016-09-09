@@ -23,6 +23,7 @@ isactive() = _active
 include("types.jl")
 include("utils.jl")
 include("frontend.jl")
+include("user.jl")
 
 include("base/base.jl")
 
