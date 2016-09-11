@@ -54,16 +54,21 @@ macro progress(ex)
 end
 
 """
-    progress(x = [0..1])
+    progress(x = [0..1], [message])
 
-Set Atom's progress bar to the given value.
+Set Atom's progress bar to the given value. Displays `message` as a tooltip.
 """
 progress(x::Void = nothing) = Atom.msg("progress", "indeterminate")
 
 progress(x::Real) =
-  Atom.msg("progress", (x < 0.01 ? nothing :
+  Atom.msg("progress", (x < 0.01 ? "indeterminate" :
                         x > 1 ? 1 :
                         x))
+
+progress(x::Real, message::String) =
+  Atom.msg("progress", (x < 0.01 ? "indeterminate" :
+                        x > 1 ? 1 :
+                        x), message)
 
 """
     progress(i, n, t_elapsed, [file])
