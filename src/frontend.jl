@@ -38,12 +38,14 @@ macro progress(ex)
     error("@progress requires a for loop")
   @esc x range body
   quote
+    file = @__FILE__
     if isactive()
       range = $range
       n = length(range)
+      t_0 = time()
       for (i, $x) in enumerate(range)
         $body
-        Atom.progress(i/n)
+        Atom.progress(i, n, time() - t_0, file)
       end
     else
       $(esc(ex))
