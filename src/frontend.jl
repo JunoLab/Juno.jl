@@ -45,7 +45,7 @@ macro progress(ex)
       t_0 = time()
       for (i, $x) in enumerate(range)
         $body
-        Atom.progress(i, n, time() - t_0, file)
+        progress(i, n, time() - t_0, file)
       end
     else
       $(esc(ex))
