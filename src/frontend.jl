@@ -1,4 +1,4 @@
-export selector, input, @progress
+export selector, input, @progress, progress
 
 """
     selector([xs...]) -> x
@@ -31,7 +31,7 @@ info(msg) = (isactive() ? Atom : Base).info(msg)
 """
     @progress for i = ...
 
-Show a progress metre for the given loop if possible.
+Show a progress meter for the given loop if possible.
 """
 macro progress(ex)
   @capture(ex, for x_ in range_ body_ end) ||
@@ -51,4 +51,45 @@ macro progress(ex)
       $(esc(ex))
     end
   end
+end
+
+"""
+    progress(x = [0..1])
+
+Set Atom's progress bar to the given value.
+"""
+progress(x::Void = nothing) = Atom.msg("progress", "indeterminate")
+
+progress(x::Real) =
+  Atom.msg("progress", (x < 0.01 ? nothing :
+                        x > 1 ? 1 :
+                        x))
+
+"""
+    progress(i, n, t_elapsed, [file])
+
+Set Atom's progress bar to `i/n` and calculate the remaining time from `t_elapsed`.
+If the `file` argument is provided, the progress bar will be linked to said file.
+"""
+function progress(i, n, Δt, file)
+  (prog, t) = _progress(i, n, Δt)
+  Atom.msg("progress", prog, "$t remaining @ $file", file)
+end
+
+function progress(i, n, Δt)
+  (prog, t) = _progress(i, n, Δt)
+  Atom.msg("progress", prog, "$t remaining")
+end
+
+function _progress(i, n, Δt)
+  remaining = Δt/i*(n-i)
+  h = Base.div(remaining, 60*60)
+  m = Base.div(remaining -= h*60*60, 60)
+  s = remaining - m*60
+  t = @sprintf "%u:%02u:%02u" h m s
+
+  prog = i/n < 0.1 ? "indeterminate" :
+         i/n >   1 ?               1 :
+         i/n
+  (prog, t)
 end
