@@ -1,6 +1,6 @@
 # Juno.jl
 
-This package defines Juno's frontend API. It is aimed primarily at allowing package authors to:
+This package defines [Juno](http://junolab.org/)'s frontend API (to install Juno, follow the instructions [here](https://github.com/JunoLab/uber-juno/blob/master/setup.md)). It is aimed primarily at allowing package authors to:
 
 * Integrate with Juno's display system to define custom output for graphics and data structures
 * Take advantage of frontend features (like showing progress metres or asking for user input) with appropriate fallbacks in other environments
