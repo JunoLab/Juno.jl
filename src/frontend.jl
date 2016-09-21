@@ -50,3 +50,5 @@ macro progress(ex)
     end
   end
 end
+
+plotsize() = Atom.plotsize()
