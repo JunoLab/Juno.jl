@@ -49,6 +49,8 @@ end
 
 @render Inline x::Symbol span(".constant.other.symbol", ":$x")
 
+@render Inline x::Char span(".string.quoted.single", "'$x'")
+
 @render Inline _::Void span(".constant", "nothing")
 
 import Base.Docs: doc
