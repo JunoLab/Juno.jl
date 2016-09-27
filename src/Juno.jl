@@ -8,7 +8,9 @@ export Media, media, render, @render
 
 _active = false
 
-activate() = @eval using Atom
+isprecompiling() = ccall(:jl_generating_output, Cint, ()) == 1
+
+activate() = !isprecompiling() && @eval using Atom
 
 setactive!(active) = (global _active = active)
 
