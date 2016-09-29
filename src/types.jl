@@ -7,7 +7,8 @@ type Editor end
 type Console end
 type PlotPane end
 
-render(::Clipboard, x) = stringmime(MIME"text/plain"(), x)
+render(::Clipboard, x) =
+  sprint(io -> show(IOContext(io, limit=true), MIME"text/plain"(), x))
 
 render(::Editor, x) =
   render(Inline(), Copyable(x))
