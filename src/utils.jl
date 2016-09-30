@@ -11,6 +11,6 @@ function interleave(xs::Vector, j)
   for x in xs
     push!(ys, x, j)
   end
-  pop!(ys)
+  isempty(xs) || pop!(ys)
   return ys
 end
