@@ -99,7 +99,10 @@ end
 end
 
 @render i::Inline x::AbstractString begin
-  span(".string", c(render(i, Text(stringmime("text/plain", x)))))
+  length(x) ≤ 100 ?
+    span(".string", c(render(i, Text(stringmime("text/plain", x))))) :
+    Row(span(".string", c("\"", render(i, Text(io -> unescape_string(io, x[1:100]))))),
+        Text("..."))
 end
 
 render{sym}(i::Inline, x::Irrational{sym}) =
