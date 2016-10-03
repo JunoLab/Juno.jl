@@ -40,10 +40,12 @@ immutable SubTree
   child
 end
 
+limit(s::AbstractString) = length(s) ≤ 1000 ? s : s[1:1000]*"..."
+
 type Copyable
   view
   text::String
-  Copyable(view, text::AbstractString) = new(view, text)
+  Copyable(view, text::String) = new(view, limit(text))
 end
 
 Copyable(view, text) = Copyable(view, render(Clipboard(), text))
