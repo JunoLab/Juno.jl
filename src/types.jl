@@ -48,7 +48,15 @@ type Copyable
   Copyable(view, text::String) = new(view, limit(text))
 end
 
-Copyable(view, text) = Copyable(view, render(Clipboard(), text))
+function Copyable(view, text)
+  cp = try
+    render(Clipboard(), text)
+  catch e
+    sprint(showerror, e, catch_backtrace())
+  end
+  Copyable(view, cp)
+end
+
 Copyable(view) = Copyable(view, view)
 
 immutable Link
