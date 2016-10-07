@@ -51,6 +51,8 @@ end
 
 @render Inline x::Char span(".string.quoted.single", "'$x'")
 
+@render Inline x::VersionNumber span(".string.quoted.other", sprint(show, x))
+
 @render Inline _::Void span(".constant", "nothing")
 
 import Base.Docs: doc
