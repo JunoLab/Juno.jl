@@ -6,3 +6,8 @@ macro step(ex)
 end
 
 breakpoint(args...) = Atom.breakpoint(args...)
+
+function connect(port)
+  activate()
+  Atom.connect(port)
+end
