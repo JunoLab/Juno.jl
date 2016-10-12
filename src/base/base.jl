@@ -43,7 +43,18 @@ getfield′(x, f) = isdefined(x, f) ? getfield(x, f) : fade("#undef")
   end
 end
 
-@render Inline x::Type span(".support.type", string(x))
+typ(x) = span(".support.type", x)
+
+@render Inline x::Type typ(string(x))
+
+for A in :[Vector, Matrix, AbstractVector, AbstractMatrix].args
+  @eval begin
+    render(i::Inline, ::Type{$A}) =
+      render(i, typ($(string(A))))
+    render{T}(i::Inline, ::Type{$A{T}}) =
+      render(i, typ(string($(string(A)), "{$T}")))
+  end
+end
 
 @render Inline x::Module span(".keyword.other", string(x))
 
