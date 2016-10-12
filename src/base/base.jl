@@ -32,7 +32,7 @@ render(::Console, x::Expr) =
     span(ls[1])
 end
 
-getfield′(x, f) = isdefined(x, f) ? getfield(x, f) : fade("#undef#")
+getfield′(x, f) = isdefined(x, f) ? getfield(x, f) : fade("#undef")
 
 @render Inline x begin
   fields = fieldnames(typeof(x))
@@ -65,14 +65,24 @@ isanon(f) = contains(string(f), "#")
          [(Atom.CodeTools.hasdoc(f) ? [doc(f)] : [])..., methods(f)])
 end
 
-@render i::Inline xs::Vector begin
-  length(xs) <= 25 ? children = handleundefs(xs) :
-                     children = [handleundefs(xs, 1:10); span("..."); handleundefs(xs, length(xs)-9:length(xs))]
-    Tree(span(c(render(i, eltype(xs)), Atom.fade("[$(length(xs))]"))),
-         children)
+function undefs(xs)
+  xs′ = similar(xs, Any)
+  for i in eachindex(xs)
+    xs′[i] = isdefined(xs, i) ? xs[i] : fade("#undef")
+  end
+  return xs′
 end
 
-@render Inline xs::Array begin
+# TODO: lazy load a recursive tree
+trim(xs, len = 25) =
+  length(xs) ≤ 25 ? xs : [xs[1:10]; fade("..."); xs[end-9:end]]
+
+@render i::Inline xs::Vector begin
+    Tree(span(c(render(i, eltype(xs)), Atom.fade("[$(length(xs))]"))),
+         undefs(trim(xs)))
+end
+
+@render Inline xs::AbstractArray begin
   Text(sprint(io -> show(IOContext(io, limit=true), MIME"text/plain"(), xs)))
 end
 
@@ -109,18 +119,6 @@ end
 
 render{sym}(i::Inline, x::Irrational{sym}) =
   render(i, span(c(string(sym), " = ", render(i, float(x)), "...")))
-
-handleundefs(X::Vector) = handleundefs(X, 1:length(X))
-
-function handleundefs(X::Vector, inds)
-  Xout = Vector{Union{String, eltype(X)}}(length(inds))
-  j = 1
-  for i in inds
-    Xout[j] = isdefined(X, i) ? X[i] : "#undef"
-    j += 1
-  end
-  Xout
-end
 
 @render i::Inline xs::Tuple begin
   span(c("(", interpose(map(x->render(i, x), xs), ", ")..., ")"))
