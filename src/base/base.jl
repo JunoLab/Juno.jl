@@ -79,7 +79,7 @@ end
 function undefs(xs)
   xs′ = similar(xs, Any)
   for i in eachindex(xs)
-    xs′[i] = isdefined(xs, i) ? xs[i] : fade("#undef")
+    xs′[i] = isassigned(xs, i) ? xs[i] : fade("#undef")
   end
   return xs′
 end
