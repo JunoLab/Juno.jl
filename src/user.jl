@@ -10,4 +10,5 @@ breakpoint(args...) = Atom.breakpoint(args...)
 function connect(port)
   activate()
   Atom.connect(port)
+  return
 end
