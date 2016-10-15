@@ -7,8 +7,8 @@ end
 
 breakpoint(args...) = Atom.breakpoint(args...)
 
-function connect(port)
+function connect(args...; kws...)
   activate()
-  Atom.connect(port)
+  Atom.connect(args...; kws...)
   return
 end
