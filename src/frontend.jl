@@ -1,4 +1,4 @@
-export selector, input, @progress
+export selector, input, @progress, structure
 
 """
     selector([xs...]) -> x
@@ -52,3 +52,27 @@ macro progress(ex)
 end
 
 plotsize() = Atom.plotsize()
+
+"""
+    structure(x)
+
+Display `x`'s underlying representation, rather than using its normal display
+method. For example, `structure(:(2x+1))` displays the `Expr` object with its
+`head` and `args` fields instead of printing the expression.
+"""
+function structure(x)
+  fields = fieldnames(typeof(x))
+  if isempty(fields)
+    isbits(x) ?
+      Row(typeof(x), Text(" "), x) :
+      Row(typeof(x), Text("()"))
+  else
+    LazyTree(typeof(x), () -> [SubTree(Text("$f → "), structure(getfield′(x, f))) for f in fields])
+  end
+end
+
+structure(x::Vector) = Tree(Row(eltype(x), fade("[$(length(x))]")), structure.(x))
+structure(s::Symbol) = s
+structure(s::Ptr) = s
+# TODO: do this properly
+structure(x::Array) = x
