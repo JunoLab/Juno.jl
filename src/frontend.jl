@@ -107,7 +107,6 @@ macro progress(name, ex)
       for (i, $x) in enumerate(range)
         $body
         progress!(p, i/n)
-        @show p
       end
       done(p)
     else
