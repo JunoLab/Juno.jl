@@ -56,7 +56,7 @@ end
 Register `p` with the Juno frontend.
 """
 function register(p::ProgressBar)
-  Juno.isactive() && Atom.msg("progress!", "add", p)
+  isactive() && Atom.msg("progress!", "add", p)
 end
 
 """
@@ -65,7 +65,7 @@ end
 Remove `p` from the frontend.
 """
 function done(p::ProgressBar)
-  Atom.msg("progress!", "delete", p)
+  isactive() && Atom.msg("progress!", "delete", p)
 end
 
 """
@@ -76,7 +76,7 @@ Update `p`'s progress. If `prog` is negative, set the progress bar to indetermin
 function progress!(p::ProgressBar, prog::Number)
   p.determinate = prog > 0
   p.progress = clamp(prog, 0, 1)
-  Atom.msg("progress!", "update", p)
+  isactive() && Atom.msg("progress!", "update", p)
 end
 
 """
@@ -87,7 +87,7 @@ corrseponding progress bar.
 """
 function msg!(p::ProgressBar, m)
   p.msg = msg
-  Atom.msg("progress!", "update", p)
+  isactive() && Atom.msg("progress!", "update", p)
 end
 
 """
