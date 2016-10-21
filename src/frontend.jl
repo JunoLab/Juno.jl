@@ -28,28 +28,98 @@ with this one.
 """
 info(msg) = (isactive() ? Atom : Base).info(msg)
 
+import Base: done
+
+type ProgressBar
+  name::String
+  id::String
+  progress::Float64
+  msg::String
+  determinate::Bool
+end
+
 """
-    @progress for i = ...
+    ProgressBar(;name = "", msg = "")
+
+Create a new progress bar and register it with Juno, if possible.
+"""
+function ProgressBar(;name = "", msg = "")
+  id = randstring(10)
+  p = ProgressBar(name, id, 0.0, msg, false)
+  register(p)
+  p
+end
+
+"""
+    register(p::ProgressBar)
+
+Register `p` with the Juno frontend.
+"""
+function register(p::ProgressBar)
+  Juno.isactive() && Atom.msg("progress!", "add", p)
+end
+
+"""
+    done(p::ProgressBar)
+
+Remove `p` from the frontend.
+"""
+function done(p::ProgressBar)
+  Atom.msg("progress!", "delete", p)
+end
+
+"""
+    progress!(p::ProgressBar, prog::Number)
+
+Update `p`'s progress. If `prog` is negative, set the progress bar to indeterminate.
+"""
+function progress!(p::ProgressBar, prog::Number)
+  p.determinate = prog > 0
+  p.progress = clamp(prog, 0, 1)
+  Atom.msg("progress!", "update", p)
+end
+
+"""
+    msg!(p::ProgressBar, m)
+
+Update the message that will be displayed in the frontend when hovering over the
+corrseponding progress bar.
+"""
+function msg!(p::ProgressBar, m)
+  p.msg = msg
+  Atom.msg("progress!", "update", p)
+end
+
+"""
+    @progress [name] for i = ...
 
 Show a progress metre for the given loop if possible.
 """
-macro progress(ex)
+macro progress(name, ex)
   @capture(ex, for x_ in range_ body_ end) ||
     error("@progress requires a for loop")
   @esc x range body
   quote
     if isactive()
+      p = ProgressBar(name = $name)
       range = $range
       n = length(range)
       for (i, $x) in enumerate(range)
         $body
-        Atom.progress(i/n)
+        progress!(p, i/n)
+        @show p
       end
+      done(p)
     else
       $(esc(ex))
     end
   end
 end
+
+macro progress(ex)
+  :(@progress "" $ex)
+end
+
 
 plotsize() = Atom.plotsize()
 
