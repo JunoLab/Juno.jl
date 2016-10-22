@@ -100,5 +100,5 @@ macro progress(name, ex)
 end
 
 macro progress(ex)
-  :(@progress "" $ex)
+  :(@progress "" $(esc(ex)))
 end
