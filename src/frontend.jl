@@ -1,4 +1,4 @@
-export selector, input, @progress, structure
+export selector, input, structure
 
 """
     selector([xs...]) -> x

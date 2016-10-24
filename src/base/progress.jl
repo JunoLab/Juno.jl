@@ -1,5 +1,7 @@
 import Base: done
 
+export ProgressBar, progress!, msg!, done, right_text!, @progress
+
 type ProgressBar
   leftText::String
   rightText::String
