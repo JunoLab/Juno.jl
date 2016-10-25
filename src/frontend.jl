@@ -74,5 +74,5 @@ end
 structure(x::Vector) = Tree(Row(eltype(x), fade("[$(length(x))]")), structure.(x))
 structure(s::Symbol) = s
 structure(s::Ptr) = s
-# TODO: do this properly
+# TODO: do this recursively
 structure(x::Array) = x
