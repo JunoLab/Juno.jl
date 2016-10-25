@@ -55,8 +55,10 @@ immutable Link
   file::String
   line::Int
   contents::Vector{Any}
-  Link(file::AbstractString, line::Integer, contents...) =
+  function Link(file::AbstractString, line::Integer, contents...)
+    isempty(contents) && (contents = ("$file:$line",))
     new(file, line, [contents...])
+  end
 end
 
 Link(file::AbstractString, contents...) = Link(file, 0, contents...)
