@@ -30,10 +30,6 @@ info(msg) = (isactive() ? Atom : Base).info(msg)
 
 plotsize() = Atom.plotsize()
 
-plotsize() = Atom.plotsize()
-
-include("progress.jl")
-
 """
     structure(x)
 
@@ -58,3 +54,5 @@ structure(s::Ptr) = s
 structure(s::String) = s
 # TODO: do this recursively
 structure(x::Array) = x
+
+include("progress.jl")
