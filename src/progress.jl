@@ -81,7 +81,15 @@ end
 
 Show a progress metre for the given loop if possible.
 """
-macro progress(name, ex)
+macro progress(args...)
+  _progress(args...)
+end
+
+function _progress(ex)
+  _progress("", ex)
+end
+
+function _progress(name, ex)
   @capture(ex, for x_ in range_ body_ end) ||
     error("@progress requires a for loop")
   @esc x range body
@@ -99,8 +107,4 @@ macro progress(name, ex)
       $(esc(ex))
     end
   end
-end
-
-macro progress(ex)
-  :(@progress "" $(esc(ex)))
 end

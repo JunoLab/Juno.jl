@@ -31,6 +31,9 @@ info(msg) = (isactive() ? Atom : Base).info(msg)
 plotsize() = Atom.plotsize()
 
 plotsize() = Atom.plotsize()
+
+include("progress.jl")
+
 """
     structure(x)
 

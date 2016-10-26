@@ -22,6 +22,10 @@ frontend.
 """
 isactive() = _active
 
+if VERSION < v"0.5-"
+  const String = AbstractString
+end
+
 include("types.jl")
 include("utils.jl")
 include("frontend.jl")
