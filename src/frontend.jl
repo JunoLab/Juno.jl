@@ -54,5 +54,3 @@ structure(s::Ptr) = s
 structure(s::String) = s
 # TODO: do this recursively
 structure(x::Array) = x
-
-include("progress.jl")

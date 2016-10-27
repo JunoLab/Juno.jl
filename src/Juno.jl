@@ -29,6 +29,7 @@ end
 include("types.jl")
 include("utils.jl")
 include("frontend.jl")
+include("progress.jl")
 include("user.jl")
 
 # We do this so that a shim API is provided on 0.4

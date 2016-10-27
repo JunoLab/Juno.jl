@@ -8,7 +8,6 @@ type ProgressBar
   id::String
   progress::Float64
   msg::String
-  determinate::Bool
 end
 
 """
@@ -17,8 +16,8 @@ end
 Create a new progress bar and register it with Juno, if possible.
 """
 function ProgressBar(;name = "", msg = "")
-  id = randstring(10)
-  p = ProgressBar(name, "", id, 0.0, msg, true)
+  id = string(Base.Random.uuid1())
+  p = ProgressBar(name, "", id, 0.0, msg)
   register(p)
   p
 end
@@ -47,8 +46,7 @@ end
 Update `p`'s progress. If `prog` is negative, set the progress bar to indeterminate.
 """
 function progress!(p::ProgressBar, prog::Number)
-  p.determinate = prog >= 0
-  p.progress = clamp(prog, 0, 1)
+  p.progress = clamp(prog, -1, 1)
   isactive() && Atom.msg("progress!", "update", p)
 end
 
