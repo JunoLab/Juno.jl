@@ -1,13 +1,10 @@
 import Base: done
 
-export ProgressBar, progress!, msg!, done, right_text!, @progress
+export ProgressBar, progress!, msg!, name!, done, right_text!, @progress
 
-type ProgressBar
-  leftText::String
-  rightText::String
+
+type ProgressBar{T}
   id::String
-  progress::Float64
-  msg::String
 end
 
 """
@@ -16,9 +13,10 @@ end
 Create a new progress bar and register it with Juno, if possible.
 """
 function ProgressBar(;name = "", msg = "")
-  id = string(Base.Random.uuid1())
-  p = ProgressBar(name, "", id, 0.0, msg)
+  p = ProgressBar{Val{isactive()}}(string(Base.Random.uuid1()))
   register(p)
+  name!(p, name)
+  msg!(p, msg)
   p
 end
 
@@ -27,28 +25,37 @@ end
 
 Register `p` with the Juno frontend.
 """
-function register(p::ProgressBar)
-  isactive() && Atom.msg("progress", "add", p)
-end
+register(p::ProgressBar{Val{true}})  = Atom.msg("progress", "add", p)
+
+register(p::ProgressBar{Val{false}}) = nothing
 
 """
     done(p::ProgressBar)
 
 Remove `p` from the frontend.
 """
-function done(p::ProgressBar)
-  isactive() && Atom.msg("progress", "delete", p)
-end
+done(p::ProgressBar{Val{true}})  = Atom.msg("progress", "delete", p)
+
+done(p::ProgressBar{Val{false}}) = nothing
 
 """
     progress!(p::ProgressBar, prog::Number)
 
-Update `p`'s progress. If `prog` is negative, set the progress bar to indeterminate.
+Update `p`'s progress to `prog`.
 """
-function progress!(p::ProgressBar, prog::Number)
-  p.progress = clamp(prog, -1, 1)
-  isactive() && Atom.msg("progress", "update", p)
-end
+progress!(p::ProgressBar{Val{true}}, prog::Number) =
+  Atom.msg("progress", "progress", p, clamp(prog, 0, 1))
+
+progress!(p::ProgressBar{Val{false}}, prog::Number) = nothing
+
+"""
+    progress!(p::ProgressBar)
+
+Set `p` to an indeterminate progress bar.
+"""
+progress!(p::ProgressBar{Val{true}})  = Atom.msg("progress", "progress")
+
+progress!(p::ProgressBar{Val{false}}) = nothing
 
 """
     msg!(p::ProgressBar, m)
@@ -56,10 +63,18 @@ end
 Update the message that will be displayed in the frontend when hovering over the
 corrseponding progress bar.
 """
-function msg!(p::ProgressBar, m)
-  p.msg = m
-  isactive() && Atom.msg("progress", "update", p)
-end
+msg!(p::ProgressBar{Val{true}}, m)  = Atom.msg("progress", "message", p, m)
+
+msg!(p::ProgressBar{Val{false}}, m) = nothing
+
+"""
+    name!(p::ProgressBar, m)
+
+Update `p`s name.
+"""
+name!(p::ProgressBar{Val{true}}, m)  = Atom.msg("progress", "leftText", p, m)
+
+name!(p::ProgressBar{Val{false}}, m) = nothing
 
 """
     right_text!(p::ProgressBar, m)
@@ -69,10 +84,9 @@ Update the string that will be displayed to the right of the progress bar.
 Defaults to the linearly extrpolated remaining time based upon the time
 difference between registering a progress bar and the latest update.
 """
-function right_text!(p::ProgressBar, s)
-  p.rightText = s
-  isactive() && Atom.msg("progress", "update", p)
-end
+right_text!(p::ProgressBar{Val{true}}, s)  = Atom.msg("progress", "rightText", p, s)
+
+right_text!(p::ProgressBar{Val{false}}, s) = nothing
 
 """
     @progress [name] for i = ...
