@@ -56,7 +56,7 @@ progress(p::ProgressBar) = isactive() && Atom.msg("progress", "progress")
     progress(f::Function; name = "", msg = "")
 
 Evaluates `f` with `ProgressBar(name = name, msg = msg)` as the argument and
-calls `done` on it afterwards. This is guaranteed to clean the progress bar up,
+calls `done` on it afterwards. This is guaranteed to clean up the progress bar,
 even if `f` errors.
 """
 function progress(f::Function; name = "", msg = "")
