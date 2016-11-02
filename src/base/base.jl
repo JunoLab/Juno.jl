@@ -1,5 +1,7 @@
 using Hiccup
 
+const UNDEF = fade("#undef")
+
 view(x) =
   Dict(:type    => :html,
        :content => stringmime(MIME"text/html"(), x))
@@ -32,7 +34,7 @@ render(::Console, x::Expr) =
     span(ls[1])
 end
 
-getfield′(x, f) = isdefined(x, f) ? getfield(x, f) : fade("#undef")
+getfield′(x, f) = isdefined(x, f) ? getfield(x, f) : UNDEF
 
 @render Inline x begin
   fields = fieldnames(typeof(x))
@@ -79,7 +81,7 @@ end
 function undefs(xs)
   xs′ = similar(xs, Any)
   for i in eachindex(xs)
-    xs′[i] = isassigned(xs, i) ? xs[i] : fade("#undef")
+    xs′[i] = isassigned(xs, i) ? xs[i] : UNDEF
   end
   return xs′
 end
