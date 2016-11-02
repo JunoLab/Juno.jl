@@ -6,7 +6,7 @@ fade(x) = span(".fade", x)
 
 icon(x) = span(".icon.icon-$x", [])
 
-function interleave(xs::Vector, j)
+function interleave(xs, j)
   ys = []
   for x in xs
     push!(ys, x, j)
@@ -14,3 +14,5 @@ function interleave(xs::Vector, j)
   isempty(xs) || pop!(ys)
   return ys
 end
+
+dims(xs...) = Row(interleave(xs, fade("×"))...)
