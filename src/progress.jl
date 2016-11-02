@@ -1,6 +1,6 @@
 import Base: done
 
-export ProgressBar, progress!, msg!, name!, done, right_text!, @progress
+export ProgressBar, progress, progress!, msg!, name!, done, right_text!, @progress
 
 
 type ProgressBar
