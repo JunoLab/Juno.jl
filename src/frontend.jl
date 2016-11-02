@@ -1,4 +1,4 @@
-export selector, input, @progress, structure
+export selector, input, structure
 
 """
     selector([xs...]) -> x
@@ -27,29 +27,6 @@ In a package, you can use `import Juno: info` to replace the default version
 with this one.
 """
 info(msg) = (isactive() ? Atom : Base).info(msg)
-
-"""
-    @progress for i = ...
-
-Show a progress metre for the given loop if possible.
-"""
-macro progress(ex)
-  @capture(ex, for x_ in range_ body_ end) ||
-    error("@progress requires a for loop")
-  @esc x range body
-  quote
-    if isactive()
-      range = $range
-      n = length(range)
-      for (i, $x) in enumerate(range)
-        $body
-        Atom.progress(i/n)
-      end
-    else
-      $(esc(ex))
-    end
-  end
-end
 
 plotsize() = Atom.plotsize()
 
