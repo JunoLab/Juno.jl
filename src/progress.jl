@@ -11,6 +11,9 @@ end
     ProgressBar(;name = "", msg = "")
 
 Create a new progress bar and register it with Juno, if possible.
+
+Take care to unregister the progress bar by calling `done` on it, or use the
+`progress(f::Function)` syntax, which will handle that automatically.
 """
 function ProgressBar(;name = "", msg = "")
   p = ProgressBar(string(Base.Random.uuid1()))
@@ -34,7 +37,6 @@ Remove `p` from the frontend.
 """
 done(p::ProgressBar) = isactive() && Atom.msg("progress", "delete", p)
 
-
 """
     progress!(p::ProgressBar, prog::Number)
 
@@ -43,7 +45,6 @@ Update `p`'s progress to `prog`.
 progress!(p::ProgressBar, prog::Number) =
   isactive() && Atom.msg("progress", "progress", p, clamp(prog, 0, 1))
 
-
 """
     progress!(p::ProgressBar)
 
@@ -51,6 +52,21 @@ Set `p` to an indeterminate progress bar.
 """
 progress!(p::ProgressBar) = isactive() && Atom.msg("progress", "progress")
 
+"""
+    progress(f::Function; name = "", msg = "")
+
+Evaluates `f` with `ProgressBar(name = name, msg = msg)` as the argument and
+calls `done` on it afterwards. This is guaranteed to clean the progress bar up,
+even if `f` errors.
+"""
+function progress(f::Function; name = "", msg = "")
+  p = ProgressBar(name = name, msg = msg)
+  try
+    f(p)
+  finally
+    done(p)
+  end
+end
 
 """
     msg!(p::ProgressBar, m)
@@ -59,7 +75,6 @@ Update the message that will be displayed in the frontend when hovering over the
 corrseponding progress bar.
 """
 msg!(p::ProgressBar, m) = isactive() && Atom.msg("progress", "message", p, m)
-
 
 """
     name!(p::ProgressBar, m)
@@ -79,7 +94,6 @@ difference between registering a progress bar and the latest update.
 """
 right_text!(p::ProgressBar, s) =
   isactive() && Atom.msg("progress", "rightText", p, s)
-
 
 """
     @progress [name] for i = ...
