@@ -100,8 +100,8 @@ function _progress(name, ex)
   @esc x range body
   quote
     if isactive()
+      p = ProgressBar(name = $name)
       try
-        p = ProgressBar(name = $name)
         range = $range
         n = length(range)
         for (i, $x) in enumerate(range)
