@@ -60,7 +60,7 @@ end
 
 @render Inline x::Symbol span(".constant.other.symbol", ":$x")
 
-@render Inline x::Char span(".string.quoted.single", "'$x'")
+@render Inline x::Char span(".string.quoted.single", escape_string("'$x'"))
 
 @render Inline x::VersionNumber span(".string.quoted.other", sprint(show, x))
 
