@@ -40,7 +40,7 @@ immutable SubTree
   child
 end
 
-limit(s::AbstractString) = length(s) ≤ 1000 ? s : s[1:1000]*"..."
+limit(s::AbstractString) = length(s) ≤ 5000 ? s : s[1:5000]*"..."
 
 type Copyable
   view
