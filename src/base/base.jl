@@ -1,7 +1,5 @@
 using Hiccup
 
-const UNDEF = fade("#undef")
-
 view(x) =
   Dict(:type    => :html,
        :content => stringmime(MIME"text/html"(), x))
@@ -76,14 +74,6 @@ isanon(f) = contains(string(f), "#")
   isanon(f) ? span(".support.function", "λ") :
     Tree(span(".support.function", string(typeof(f).name.mt.name)),
          [(Atom.CodeTools.hasdoc(f) ? [doc(f)] : [])..., methods(f)])
-end
-
-function undefs(xs)
-  xs′ = similar(xs, Any)
-  for i in eachindex(xs)
-    xs′[i] = isassigned(xs, i) ? xs[i] : UNDEF
-  end
-  return xs′
 end
 
 # TODO: lazy load a recursive tree
