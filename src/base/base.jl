@@ -34,9 +34,13 @@ end
 
 getfield′(x, f) = isdefined(x, f) ? getfield(x, f) : UNDEF
 
+showmethod(T) = which(show, (IO, T))
+
 @render Inline x begin
   fields = fieldnames(typeof(x))
-  if isempty(fields)
+  if showmethod(typeof(x)) ≠ showmethod(Any)
+    Text(io -> show(IOContext(io, limit = true), x))
+  elseif isempty(fields)
     span(c(render(Inline(), typeof(x)), "()"))
   else
     LazyTree(typeof(x), () -> [SubTree(Text("$f → "), getfield′(x, f)) for f in fields])
