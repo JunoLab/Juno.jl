@@ -73,3 +73,7 @@ end
 @render Inline l::Row begin
   span([render(Inline(), x) for x in l.xs])
 end
+
+type Table
+  xs::Matrix{Any}
+end

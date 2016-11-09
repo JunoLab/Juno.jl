@@ -32,7 +32,7 @@ render(::Console, x::Expr) =
     span(ls[1])
 end
 
-getfield′(x, f) = isdefined(x, f) ? getfield(x, f) : fade("#undef")
+getfield′(x, f) = isdefined(x, f) ? getfield(x, f) : UNDEF
 
 @render Inline x begin
   fields = fieldnames(typeof(x))
@@ -74,14 +74,6 @@ isanon(f) = contains(string(f), "#")
   isanon(f) ? span(".support.function", "λ") :
     Tree(span(".support.function", string(typeof(f).name.mt.name)),
          [(Atom.CodeTools.hasdoc(f) ? [doc(f)] : [])..., methods(f)])
-end
-
-function undefs(xs)
-  xs′ = similar(xs, Any)
-  for i in eachindex(xs)
-    xs′[i] = isassigned(xs, i) ? xs[i] : fade("#undef")
-  end
-  return xs′
 end
 
 # TODO: lazy load a recursive tree
