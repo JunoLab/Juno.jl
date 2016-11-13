@@ -28,6 +28,13 @@ with this one.
 """
 info(msg) = (isactive() ? Atom : Base).info(msg)
 
+
+"""
+    plotsize()
+
+Get the size of Juno's plot pane in `px`. Does not yet have a fallback for
+other environments.
+"""
 plotsize() = Atom.plotsize()
 
 """

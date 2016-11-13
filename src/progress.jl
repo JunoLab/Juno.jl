@@ -55,8 +55,8 @@ progress(p::ProgressBar) = isactive() && Atom.msg("progress", "progress")
 """
     progress(f::Function; name = "", msg = "")
 
-Evaluates `f` with `ProgressBar(name = name, msg = msg)` as the argument and
-calls `done` on it afterwards. This is guaranteed to clean up the progress bar,
+Evaluates `f` with `p = ProgressBar(name = name, msg = msg)` as the argument and
+calls `done(p)` afterwards. This is guaranteed to clean up the progress bar,
 even if `f` errors.
 """
 function progress(f::Function; name = "", msg = "")
@@ -81,8 +81,7 @@ msg(p::ProgressBar, m) = isactive() && Atom.msg("progress", "message", p, m)
 
 Update `p`s name.
 """
-name(p::ProgressBar, m) =
-  isactive() && Atom.msg("progress", "leftText", p, m)
+name(p::ProgressBar, s) = isactive() && Atom.msg("progress", "leftText", p, s)
 
 """
     right_text(p::ProgressBar, m)
@@ -92,8 +91,7 @@ Update the string that will be displayed to the right of the progress bar.
 Defaults to the linearly extrpolated remaining time based upon the time
 difference between registering a progress bar and the latest update.
 """
-right_text(p::ProgressBar, s) =
-  isactive() && Atom.msg("progress", "rightText", p, s)
+right_text(p::ProgressBar, s) = isactive() && Atom.msg("progress", "rightText", p, s)
 
 """
     @progress [name] for i = ...
