@@ -39,4 +39,9 @@ if VERSION >= v"0.5-"
   include("base/base.jl")
 end
 
+function startup(port)
+  eval(Main, :(module JunoMain; using $(VERSION < v"0.5-" ? :Atom : :Juno); end))
+  Juno.connect(port)
+end
+
 end # module
