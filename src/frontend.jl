@@ -44,8 +44,7 @@ Reload the `JunoMain` module when running inside of Juno, and falls back to
 `workspace()` otherwise.
 """
 function clearall()
-  isactive() ? eval(Main, :(module JunoMain; using $(VERSION < v"0.5-" ? :Atom : :Juno); end)) :
-               workspace()
+  isactive() ? Atom.resetJunoMain() : workspace()
   nothing
 end
 
