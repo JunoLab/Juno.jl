@@ -42,7 +42,7 @@ done(p::ProgressBar) = isactive() && Atom.msg("progress", "delete", p)
 
 Update `p`'s progress to `prog`.
 """
-progress(p::ProgressBar, prog::Number) =
+progress(p::ProgressBar, prog::Real) =
   isactive() && Atom.msg("progress", "progress", p, clamp(prog, 0, 1))
 
 """
@@ -113,6 +113,7 @@ function _progress(name, ex)
   quote
     if isactive()
       p = ProgressBar(name = $name)
+      progress(p, 0)
       try
         range = $range
         n = length(range)
