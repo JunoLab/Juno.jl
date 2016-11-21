@@ -28,7 +28,6 @@ with this one.
 """
 info(msg) = (isactive() ? Atom : Base).info(msg)
 
-
 """
     plotsize()
 
