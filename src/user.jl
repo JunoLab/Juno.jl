@@ -1,4 +1,4 @@
-export @step, breakpoint
+export @step, breakpoint, profiler
 
 macro step(ex)
   @capture(ex, f_(args__)) || error("Syntax: @step f(...)")
@@ -12,3 +12,5 @@ function connect(args...; kws...)
   Atom.connect(args...; kws...)
   return
 end
+
+profiler() = Atom.Profiler.profiler()
