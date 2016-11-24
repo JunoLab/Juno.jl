@@ -120,7 +120,7 @@ end
 @render i::Inline x::AbstractString begin
   length(x) ≤ 100 ?
     span(".string", c(render(i, Text(stringmime("text/plain", x))))) :
-    Row(span(".string", c("\"", render(i, Text(io -> unescape_string(io, x[1:100]))))),
+    Row(span(".string", c("\"", render(i, Text(io -> escape_string(io, x[1:100]))))),
         Text("..."))
 end
 
