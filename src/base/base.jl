@@ -82,11 +82,11 @@ end
 
 # TODO: lazy load a recursive tree
 trim(xs, len = 25) =
-  length(xs) ≤ 25 ? xs : [xs[1:10]; fade("..."); xs[end-9:end]]
+  length(xs) ≤ 25 ? undefs(xs) :
+                    [undefs(xs[1:10]); fade("..."); undefs(xs[end-9:end])]
 
 @render i::Inline xs::Vector begin
-    Tree(span(c(render(i, eltype(xs)), Atom.fade("[$(length(xs))]"))),
-         undefs(trim(xs)))
+    Tree(span(c(render(i, eltype(xs)), Atom.fade("[$(length(xs))]"))), trim(xs))
 end
 
 @render Inline xs::AbstractArray begin
