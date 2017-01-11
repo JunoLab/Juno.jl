@@ -11,7 +11,7 @@ render(::Console, ::Void) = nothing
 
 render(::Inline, x::AbstractFloat) =
   isnan(x) || isinf(x) ?
-    view(span(".constant.number", string(x))) :
+    view(span(".syntax--constant.syntax--number", string(x))) :
     Dict(:type => :number, :value => Float64(x), :full => string(x))
 
 @render Inline x::Expr begin
@@ -47,7 +47,7 @@ showmethod(T) = which(show, (IO, T))
   end
 end
 
-typ(x) = span(".support.type", x)
+typ(x) = span(".syntax--support.syntax--type", x)
 
 @render Inline x::Type typ(string(x))
 
@@ -60,23 +60,23 @@ for A in :[Vector, Matrix, AbstractVector, AbstractMatrix].args
   end
 end
 
-@render Inline x::Module span(".keyword.other", string(x))
+@render Inline x::Module span(".syntax--keyword.syntax--other", string(x))
 
-@render Inline x::Symbol span(".constant.other.symbol", ":$x")
+@render Inline x::Symbol span(".syntax--constant.syntax--other.syntax--symbol", ":$x")
 
-@render Inline x::Char span(".string.quoted.single", escape_string("'$x'"))
+@render Inline x::Char span(".syntax--string.syntax--quoted.syntax--single", escape_string("'$x'"))
 
-@render Inline x::VersionNumber span(".string.quoted.other", sprint(show, x))
+@render Inline x::VersionNumber span(".syntax--string.syntax--quoted.syntax--other", sprint(show, x))
 
-@render Inline _::Void span(".constant", "nothing")
+@render Inline _::Void span(".syntax--constant", "nothing")
 
 import Base.Docs: doc
 
 isanon(f) = contains(string(f), "#")
 
 @render Inline f::Function begin
-  isanon(f) ? span(".support.function", "λ") :
-    Tree(span(".support.function", string(typeof(f).name.mt.name)),
+  isanon(f) ? span(".syntax--support.syntax--function", "λ") :
+    Tree(span(".syntax--support.syntax--function", string(typeof(f).name.mt.name)),
          [(Atom.CodeTools.hasdoc(f) ? [doc(f)] : [])..., methods(f)])
 end
 
@@ -105,7 +105,7 @@ end
             Atom.fade(" $(eltype(d).parameters[1]) → $(eltype(d).parameters[2]) with $(length(d)) entries"))), st)
 end
 
-@render Inline x::Number span(".constant.number", sprint(show, x))
+@render Inline x::Number span(".syntax--constant.syntax--number", sprint(show, x))
 
 @render i::Inline x::Complex begin
   re, ima = reim(x)
@@ -114,13 +114,13 @@ end
 
 @render Inline p::Ptr begin
   Row(Atom.fade(string(typeof(p))), Text(" @"),
-       span(".constant.number", c("0x$(hex(UInt(p), Sys.WORD_SIZE>>2))")))
+       span(".syntax--constant.syntax--number", c("0x$(hex(UInt(p), Sys.WORD_SIZE>>2))")))
 end
 
 @render i::Inline x::AbstractString begin
   length(x) ≤ 100 ?
-    span(".string", c(render(i, Text(stringmime("text/plain", x))))) :
-    Row(span(".string", c("\"", render(i, Text(io -> unescape_string(io, x[1:100]))))),
+    span(".syntax--string", c(render(i, Text(stringmime("text/plain", x))))) :
+    Row(span(".syntax--string", c("\"", render(i, Text(io -> unescape_string(io, x[1:100]))))),
         Text("..."))
 end
 

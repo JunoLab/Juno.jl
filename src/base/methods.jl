@@ -37,7 +37,7 @@ end
   isempty(ms) && return "$(m.mt.name) has no methods."
   r(x) = render(i, x)
   length(ms) == 1 && return r(ms[1])
-  Tree(span(c(span(".support.function", string(m.mt.name)),
+  Tree(span(c(span(".syntax--support.syntax--function", string(m.mt.name)),
               " has $(length(ms)) methods:")),
-       [table(".methods", [tr(td(c(r(a))), td(c(r(b)))) for (a, b) in map(view, ms)])])
+       [table(".syntax--methods", [tr(td(c(r(a))), td(c(r(b)))) for (a, b) in map(view, ms)])])
 end
