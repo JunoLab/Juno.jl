@@ -1,4 +1,4 @@
-export selector, input, structure
+export selector, input, structure, clearall
 
 """
     selector([xs...]) -> x
@@ -36,6 +36,17 @@ Get the size of Juno's plot pane in `px`. Does not yet have a fallback for
 other environments.
 """
 plotsize() = Atom.plotsize()
+
+"""
+    clearall()
+
+Reload the `JunoMain` module when running inside of Juno, and falls back to
+`workspace()` otherwise.
+"""
+function clearall()
+  isactive() ? Atom.resetJunoMain() : workspace()
+  nothing
+end
 
 """
     structure(x)
