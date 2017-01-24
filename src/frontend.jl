@@ -1,4 +1,4 @@
-export selector, input, structure
+export selector, input, structure, @sh
 
 """
     selector([xs...]) -> x
@@ -64,3 +64,11 @@ structure(s::Ptr) = s
 structure(s::String) = s
 # TODO: do this recursively
 structure(x::Array) = x
+
+macro sh(ex)
+  quote
+    result = $(esc(ex))
+    display(Row($(Expr(:quote, ex)), text" = ", result))
+    result
+  end
+end
