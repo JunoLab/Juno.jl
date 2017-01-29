@@ -79,3 +79,4 @@ type Table
 end
 
 errtrace(e, trace) = trace
+errmsg(e) = sprint(showerror, e)
