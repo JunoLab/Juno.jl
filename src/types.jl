@@ -77,3 +77,5 @@ end
 type Table
   xs::Matrix{Any}
 end
+
+errtrace(e, trace) = trace
