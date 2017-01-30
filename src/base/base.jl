@@ -76,8 +76,8 @@ isanon(f) = contains(string(f), "#")
 
 @render Inline f::Function begin
   isanon(f) ? span(".syntax--support.syntax--function", "λ") :
-    Tree(span(".syntax--support.syntax--function", string(typeof(f).name.mt.name)),
-         [(Atom.CodeTools.hasdoc(f) ? [doc(f)] : [])..., methods(f)])
+    LazyTree(span(".syntax--support.syntax--function", string(typeof(f).name.mt.name)),
+             ()->[(Atom.CodeTools.hasdoc(f) ? [doc(f)] : [])..., methods(f)])
 end
 
 # TODO: lazy load a recursive tree
