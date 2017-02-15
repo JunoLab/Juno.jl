@@ -6,7 +6,7 @@ using MacroTools, Media
 
 import Media: render
 
-export Media, media, render, @render
+export Media, media, @render
 
 _active = false
 
