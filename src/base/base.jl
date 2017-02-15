@@ -124,10 +124,12 @@ end
         Text("..."))
 end
 
-@render Inline li::LambdaInfo begin
-  out = split(sprint(show, MIME"text/plain"(), li), '\n', limit=2)
-  Tree(Text(out[1]),
-       [Model(Dict(:type => :code, :text => out[2]))])
+@static if VERSION.minor == 5
+  @render Inline li::LambdaInfo begin
+    out = split(sprint(show, MIME"text/plain"(), li), '\n', limit=2)
+    Tree(Text(out[1]),
+         [Model(Dict(:type => :code, :text => out[2]))])
+  end
 end
 
 render{sym}(i::Inline, x::Irrational{sym}) =
