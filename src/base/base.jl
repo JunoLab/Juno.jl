@@ -39,7 +39,7 @@ showmethod(T) = which(show, (IO, T))
 @render Inline x begin
   fields = fieldnames(typeof(x))
   if showmethod(typeof(x)) ≠ showmethod(Any)
-    Text(io -> show(IOContext(io, limit = true), x))
+    Text(io -> show(IOContext(io, limit = true), MIME"text/plain"(), x))
   elseif isempty(fields)
     span(c(render(Inline(), typeof(x)), "()"))
   else
