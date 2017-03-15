@@ -79,4 +79,4 @@ type Table
 end
 
 errtrace(e, trace) = trace
-errmsg(e) = sprint(showerror, e)
+errmsg(e) = sprint(io -> showerror(IOContext(io, limit=true), e))
