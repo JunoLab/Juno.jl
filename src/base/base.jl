@@ -117,10 +117,11 @@ end
        span(".syntax--constant.syntax--number", c("0x$(hex(UInt(p), Sys.WORD_SIZE>>2))")))
 end
 
+# TODO: lazy load the rest of the string
 @render i::Inline x::AbstractString begin
   length(x) ≤ 100 ?
     span(".syntax--string", c(render(i, Text(stringmime("text/plain", x))))) :
-    Row(span(".syntax--string", c("\"", render(i, Text(io -> unescape_string(io, x[1:100]))))),
+    Row(span(".syntax--string", c("\"", render(i, Text(escape_string(x[1:chr2ind(x, 200)]))))),
         Text("..."))
 end
 
