@@ -89,6 +89,10 @@ trim(xs, len = 25) =
     Tree(span(c(render(i, eltype(xs)), Atom.fade("[$(length(xs))]"))), trim(xs))
 end
 
+@render i::Inline xs::Set begin
+    Tree(span(c(render(i, typeof(xs)), Atom.fade("[$(length(xs))]"))), trim(collect(xs)))
+end
+
 @render Inline xs::AbstractArray begin
   Text(sprint(io -> show(IOContext(io, limit=true), MIME"text/plain"(), xs)))
 end
