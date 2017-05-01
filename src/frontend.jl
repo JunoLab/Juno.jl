@@ -11,11 +11,11 @@ environments.
 selector(xs) = Atom.selector(xs)
 
 """
-    input() -> "..."
+    input(prompt = "") -> "..."
 
-Prompt the user to input some text, and return it.
+Prompt the user to input some text, and return it. Optionally display a prompt.
 """
-input() = isactive() ? Atom.input() : readline()
+input(prompt = "") = (print(prompt); isactive() ? Atom.input() : readline())
 
 """
     info(msg)
