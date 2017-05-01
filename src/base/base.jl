@@ -125,7 +125,7 @@ end
 @render i::Inline x::AbstractString begin
   length(x) ≤ 100 ?
     span(".syntax--string", c(render(i, Text(stringmime("text/plain", x))))) :
-    Row(span(".syntax--string", c("\"", render(i, Text(escape_string(x[1:chr2ind(x, 200)]))))),
+    Row(span(".syntax--string", c("\"", render(i, Text(escape_string(x[1:chr2ind(x, 500)]))))),
         Text("..."))
 end
 
