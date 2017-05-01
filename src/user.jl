@@ -9,6 +9,6 @@ breakpoint(args...) = Atom.breakpoint(args...)
 
 function connect(args...; kws...)
   activate()
-  Atom.connect(args...; kws...)
+  eval(:(Atom.connect($args...; $kws...)))
   return
 end
