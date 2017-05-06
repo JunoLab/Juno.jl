@@ -19,4 +19,4 @@ let i = 0
   @test i == 100
 end
 
-@test Juno.notify("hi")
+@test Juno.notify("hi") == nothing
