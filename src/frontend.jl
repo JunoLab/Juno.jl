@@ -28,6 +28,16 @@ with this one.
 """
 info(msg) = (isactive() ? Atom : Base).info(msg)
 
+"""
+    notify(msg)
+
+Display `msg` as an OS specific notification.
+
+Useful for signaling the end of a long running computation or similar. This
+disregards the `Notifications` setting in `julia-client`. Falls back to
+`info(msg)` in other environments.
+"""
+notify(msg::AbstractString) = isactive() ? Atom.notify(msg) : info(msg)
 
 """
     plotsize()
@@ -41,7 +51,9 @@ plotsize() = Atom.plotsize()
     structure(x)
 
 Display `x`'s underlying representation, rather than using its normal display
-method. For example, `structure(:(2x+1))` displays the `Expr` object with its
+method.
+
+For example, `structure(:(2x+1))` displays the `Expr` object with its
 `head` and `args` fields instead of printing the expression.
 """
 function structure(x)

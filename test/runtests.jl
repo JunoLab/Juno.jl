@@ -18,3 +18,5 @@ let i = 0
   end
   @test i == 100
 end
+
+@test Juno.notify("hi") == nothing
