@@ -37,7 +37,7 @@ Useful for signaling the end of a long running computation or similar. This
 disregards the `Notifications` setting in `julia-client`. Falls back to
 `info(msg)` in other environments.
 """
-notify(msg::AbstractString) = isactive() ? Atom.notify(msg) : info(msg)
+notify(msg::AbstractString) = isactive() ? Atom.sendnotify(msg) : info(msg)
 
 """
     plotsize()
