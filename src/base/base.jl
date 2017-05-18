@@ -40,7 +40,25 @@ showmethod(T) = which(show, (IO, T))
   fields = fieldnames(typeof(x))
   if showmethod(typeof(x)) ≠ showmethod(Any)
     Text(io -> show(IOContext(io, limit = true), MIME"text/plain"(), x))
-  elseif isempty(fields)
+  else
+    defaultrepr(x)
+  end
+end
+
+"""
+    defaultrepr(x)
+
+`render` fallback for types without any specialized `show` methods.
+
+Can be used by packages to restore Juno's default printing if they have defined
+a `show` method that should *not* be used by Juno:
+```julia
+Juno.render(i::Juno.Inline, x::myType) = Juno.render(i, Juno.defaultrepr(x))
+```
+"""
+function defaultrepr(x)
+  fields = fieldnames(typeof(x))
+  if isempty(fields)
     span(c(render(Inline(), typeof(x)), "()"))
   else
     LazyTree(typeof(x), () -> [SubTree(Text("$f → "), getfield′(x, f)) for f in fields])
