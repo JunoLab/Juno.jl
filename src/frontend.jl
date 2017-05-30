@@ -48,6 +48,13 @@ other environments.
 plotsize() = Atom.plotsize()
 
 """
+    showprofile()
+
+Show currently collected profile information in the editor.
+"""
+showprofile() = isactive() && Atom.Profiler.profiler()
+
+"""
     structure(x)
 
 Display `x`'s underlying representation, rather than using its normal display
