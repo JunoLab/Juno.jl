@@ -48,11 +48,18 @@ other environments.
 plotsize() = Atom.plotsize()
 
 """
-    showprofile()
+    profiler()
 
-Show currently collected profile information in the editor.
+Show currently collected profile information as an in-editor flamechart.
 """
-showprofile() = isactive() && Atom.Profiler.profiler()
+profiler() = isactive() && Atom.Profiler.profiler()
+
+"""
+    profiletree()
+
+Show currently collected profile information in tree-form. Falls back to `Profile.print()`.
+"""
+profiletree() = isactive() ? Atom.Profiler.tree() : Profile.print()
 
 """
     structure(x)
