@@ -41,14 +41,17 @@ showmethod(T) = which(show, (IO, T))
   if showmethod(typeof(x)) ≠ showmethod(Any)
     Text(io -> show(IOContext(io, limit = true), MIME"text/plain"(), x))
   else
-    defaultrepr(x)
+    defaultrepr(x, true)
   end
 end
 
 """
-    defaultrepr(x)
+    defaultrepr(x, lazy = false)
 
 `render` fallback for types without any specialized `show` methods.
+
+If `lazy` is true, then the type's fields will be loaded lazily when expanding the tree.
+This is useful when the fields contain big elements that might need to be inspectable.
 
 Can be used by packages to restore Juno's default printing if they have defined
 a `show` method that should *not* be used by Juno:
@@ -56,12 +59,13 @@ a `show` method that should *not* be used by Juno:
 Juno.render(i::Juno.Inline, x::myType) = Juno.render(i, Juno.defaultrepr(x))
 ```
 """
-function defaultrepr(x)
+function defaultrepr(x, lazy = false)
   fields = fieldnames(typeof(x))
   if isempty(fields)
     span(c(render(Inline(), typeof(x)), "()"))
   else
-    LazyTree(typeof(x), () -> [SubTree(Text("$f → "), getfield′(x, f)) for f in fields])
+    lazy ? LazyTree(typeof(x), () -> [SubTree(Text("$f → "), getfield′(x, f)) for f in fields]) :
+           Tree(typeof(x), [SubTree(Text("$f → "), getfield′(x, f)) for f in fields])
   end
 end
 
