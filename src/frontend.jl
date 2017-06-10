@@ -55,6 +55,20 @@ Show currently collected profile information as an in-editor flamechart.
 profiler() = isactive() && Atom.Profiler.profiler()
 
 """
+    @profiler
+
+Clear currently collected profile traces, profile the provided expression and show
+it via `Juno.profiler()`.
+"""
+macro profiler(exp)
+  quote
+    Profile.clear()
+    @profile $(esc(exp))
+    profiler()
+  end
+end
+
+"""
     profiletree()
 
 Show currently collected profile information in tree-form. Falls back to `Profile.print()`.
