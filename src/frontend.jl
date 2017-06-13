@@ -1,4 +1,4 @@
-export selector, input, structure, @sh
+export selector, input, structure, @sh, @profiler
 
 """
     selector([xs...]) -> x
