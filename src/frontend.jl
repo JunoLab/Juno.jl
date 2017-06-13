@@ -1,4 +1,4 @@
-export selector, input, structure, @sh
+export selector, input, structure, @sh, @profiler
 
 """
     selector([xs...]) -> x
@@ -53,6 +53,21 @@ plotsize() = Atom.plotsize()
 Show currently collected profile information as an in-editor flamechart.
 """
 profiler() = isactive() && Atom.Profiler.profiler()
+
+"""
+    @profiler
+
+Clear currently collected profile traces, profile the provided expression and show
+it via `Juno.profiler()`.
+"""
+macro profiler(exp)
+  quote
+    Profile.clear()
+    res = @profile $(esc(exp))
+    profiler()
+    res
+  end
+end
 
 """
     profiletree()
