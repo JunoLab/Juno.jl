@@ -1,4 +1,4 @@
-export selector, input, structure, @sh, @profiler
+export selector, clearconsole, input, structure, @sh, @profiler
 
 """
     selector([xs...]) -> x
@@ -9,6 +9,13 @@ Allow the user to select one of the `xs`.
 environments.
 """
 selector(xs) = Atom.selector(xs)
+
+"""
+    clearconsole()
+
+Clear the console if Juno is used; does nothing otherwise.
+"""
+clearconsole() = isactive() && Atom.clearconsole()
 
 """
     input(prompt = "") -> "..."
