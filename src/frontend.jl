@@ -11,6 +11,13 @@ environments.
 selector(xs) = Atom.selector(xs)
 
 """
+    clearconsole()
+
+Clear the console if Juno is used; does nothing otherwise.
+"""
+clearconsole() = isactive() && Atom.clearconsole()
+
+"""
     input(prompt = "") -> "..."
 
 Prompt the user to input some text, and return it. Optionally display a prompt.
