@@ -11,11 +11,11 @@ environments.
 selector(xs) = Atom.selector(xs)
 
 """
-    clc()
+    clearconsole()
 
 Clear the console if Juno is used; does nothing otherwise.
 """
-clc() = isactive() && Atom.clearconsole()
+clearconsole() = isactive() && Atom.clearconsole()
 
 """
     input(prompt = "") -> "..."
