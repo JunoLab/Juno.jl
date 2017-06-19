@@ -1,4 +1,4 @@
-export selector, input, structure, @sh, @profiler
+export selector, clc, input, structure, @sh, @profiler
 
 """
     selector([xs...]) -> x
@@ -11,11 +11,11 @@ environments.
 selector(xs) = Atom.selector(xs)
 
 """
-    clearconsole()
+    clc()
 
 Clear the console if Juno is used; does nothing otherwise.
 """
-clearconsole() = isactive() && Atom.clearconsole()
+clc() = isactive() && Atom.clearconsole()
 
 """
     input(prompt = "") -> "..."
