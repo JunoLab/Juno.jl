@@ -12,7 +12,7 @@ render(::Console, ::Void) = nothing
 render(::Inline, x::AbstractFloat) =
   isnan(x) || isinf(x) ?
     view(span(".syntax--constant.syntax--number", string(x))) :
-    Dict(:type => :number, :value => Float64(x), :full => string(x))
+    Dict(:type => :number, :value => float(x), :full => string(x))
 
 @render Inline x::Expr begin
   text = string(x)
