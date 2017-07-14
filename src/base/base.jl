@@ -11,7 +11,7 @@ render(::Console, ::Void) = nothing
 
 render(::Inline, x::AbstractFloat) =
   isnan(x) || isinf(x) ?
-    view(span(".syntax--constant.syntax--number", string(x))) :
+    view(span(".syntax--constant.syntax--numeric", string(x))) :
     Dict(:type => :number, :value => float(x), :full => string(x))
 
 @render Inline x::Expr begin
@@ -131,7 +131,7 @@ end
             Atom.fade(" $(eltype(d).parameters[1]) → $(eltype(d).parameters[2]) with $(length(d)) entries"))), st)
 end
 
-@render Inline x::Number span(".syntax--constant.syntax--number", sprint(show, x))
+@render Inline x::Number span(".syntax--constant.syntax--numeric", sprint(show, x))
 
 @render i::Inline x::Complex begin
   re, ima = reim(x)
@@ -140,7 +140,7 @@ end
 
 @render Inline p::Ptr begin
   Row(Atom.fade(string(typeof(p))), Text(" @"),
-       span(".syntax--constant.syntax--number", c("0x$(hex(UInt(p), Sys.WORD_SIZE>>2))")))
+       span(".syntax--constant.syntax--numeric", c("0x$(hex(UInt(p), Sys.WORD_SIZE>>2))")))
 end
 
 # TODO: lazy load the rest of the string
