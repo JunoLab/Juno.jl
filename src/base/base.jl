@@ -167,10 +167,5 @@ render{sym}(i::Inline, x::Irrational{sym}) =
   span(c("(", interpose(map(x->render(i, x), xs), ", ")..., ")"))
 end
 
-@render i::Inline md::Base.Markdown.MD begin
-  mds = Atom.CodeTools.flatten(md)
-  length(mds) == 1 ? Text(chomp(sprint(show, MIME"text/markdown"(), md))) :
-                     Tree(Text("MD"), [HTML(sprint(show, MIME"text/html"(), md))])
-end
-
 include("methods.jl")
+include("markdown.jl")
