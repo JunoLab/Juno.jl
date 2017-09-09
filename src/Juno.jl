@@ -24,9 +24,6 @@ frontend.
 """
 isactive() = _active
 
-if VERSION < v"0.5-"
-  const String = AbstractString
-end
 
 include("types.jl")
 include("utils.jl")
@@ -35,8 +32,6 @@ include("progress.jl")
 include("user.jl")
 
 # We do this so that a shim API is provided on 0.4
-if VERSION >= v"0.5-"
-  include("base/base.jl")
-end
+include("base/base.jl")
 
 end # module
