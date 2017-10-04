@@ -9,7 +9,7 @@ render(e::Editor, ::Void) =
 
 render(::Console, ::Void) = nothing
 
-render(::Inline, x::AbstractFloat) =
+render(::Inline, x::Union{Float16, Float32, Float64}) =
   isnan(x) || isinf(x) ?
     view(span(".syntax--constant.syntax--numeric", string(x))) :
     Dict(:type => :number, :value => float(x), :full => string(x))
