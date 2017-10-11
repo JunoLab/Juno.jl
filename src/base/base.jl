@@ -19,11 +19,11 @@ render(::Inline, x::Union{Float16, Float32, Float64}) =
   length(split(text, "\n")) == 1 ?
     Model(Dict(:type => :code, :text => text)) :
     Tree(Text("Code"),
-         [Model(Dict(:type => :code, :text => text))])
+         [Model(Dict(:type => :code, :text => text, :attrs => Dict(:block => true)))])
 end
 
 render(::Console, x::Expr) =
-  Atom.msg("result", Dict(:type => :code, :text => string(x)))
+  Atom.msg("result", Dict(:type => :code, :text => string(x), :attrs => Dict(:block => true)))
 
 @render Inline x::Text begin
   ls = split(chomp(string(x)), "\n")
