@@ -1,8 +1,12 @@
-export @step, breakpoint
+export @enter, breakpoint
+"""
+    @enter ex
 
-macro step(ex)
-  @capture(ex, f_(args__)) || error("Syntax: @step f(...)")
-  :(Atom.step($(esc(f)), $(map(esc, args)...)))
+Step into the function call in `ex`.
+"""
+macro enter(ex)
+  @capture(ex, f_(args__)) || error("Syntax: @enter f(...)")
+  :(Atom.Debugger.@enter($(ex)))
 end
 
 breakpoint(args...) = Atom.breakpoint(args...)

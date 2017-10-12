@@ -1,4 +1,4 @@
-export selector, clearconsole, input, structure, @sh, @profiler
+export selector, clearconsole, input, structure, @sh, @profiler, @enter
 
 """
     selector([xs...]) -> x
@@ -113,6 +113,12 @@ structure(s::String) = s
 # TODO: do this recursively
 structure(x::Array) = x
 
+"""
+    @sh expr
+
+Displays the expression `expr` and its result in the console, similar to `@show` but with
+proper syntax highlighting.
+"""
 macro sh(ex)
   quote
     result = $(esc(ex))
