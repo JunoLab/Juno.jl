@@ -6,7 +6,7 @@ Step into the function call in `ex`.
 """
 macro enter(ex)
   @capture(ex, f_(args__)) || error("Syntax: @enter f(...)")
-  :(Atom.Debugger.@enter($(ex)))
+  :(Atom.Debugger.@enter($(esc(ex))))
 end
 
 breakpoint(args...) = Atom.breakpoint(args...)
