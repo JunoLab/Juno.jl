@@ -1,4 +1,4 @@
-# Documentation: http://docs.travis-ci.com/user/languages/julia/
+
 language: julia
 os:
   - linux
@@ -14,9 +14,4 @@ notifications:
 # uncomment the following lines to override the default test script
 #script:
 #  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-#  - julia -e 'Pkg.clone(pwd()); Pkg.build("Juno"); Pkg.test("Juno"; coverage=true)'
-after_success:
-  # push coverage results to Coveralls
-  - julia -e 'cd(Pkg.dir("Juno")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
-  # push coverage results to Codecov
-  - julia -e 'cd(Pkg.dir("Juno")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+#  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.build("Atom"); Pkg.test("Atom"; coverage=true)'
