@@ -126,3 +126,22 @@ macro sh(ex)
     result
   end
 end
+
+"""
+    default_render(x)
+
+Returns the default rendering tree for a type. When coupled with `Media.render`, this can
+change the Juno rendering to ignore overrides and go back to its defualt. Ex:
+
+```julia
+function Media.render(::Juno.Inline, x::MyType)
+  Juno.default_render(x)
+end
+```
+"""
+function default_render(x)
+  fields = fieldnames(typeof(x))
+  tree = Juno.LazyTree(typeof(x), (()->
+     [Juno.SubTree(Juno.Text("$(f) → "), Juno.getfield′(x, f)) for f = fields]))
+  Media.render(tree)
+end
