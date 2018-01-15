@@ -55,10 +55,13 @@ other environments.
 plotsize() = Atom.plotsize()
 
 """
-    syntaxcolors()
+    syntaxcolors(selectors = Atom.SELECTORS)
 
 Get the colors used by the current Atom theme.
+`selectors` should be a `Dict{String, Vector{String}}` which assigns a css
+selector (e.g. `syntax--julia`) to a name (e.g. `variable`).
 """
+syntaxcolors(selectors) = isactive() ? Atom.syntaxcolors(selectors) : Dict()
 syntaxcolors() = isactive() ? Atom.syntaxcolors() : Dict()
 
 
