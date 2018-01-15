@@ -55,6 +55,14 @@ other environments.
 plotsize() = Atom.plotsize()
 
 """
+    syntaxcolors()
+
+Get the colors used by the current Atom theme.
+"""
+syntaxcolors() = isactive() ? Atom.rpc("colors") : Dict()
+
+
+"""
     profiler()
 
 Show currently collected profile information as an in-editor flamechart.
