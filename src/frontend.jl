@@ -59,7 +59,7 @@ plotsize() = Atom.plotsize()
 
 Get the colors used by the current Atom theme.
 """
-syntaxcolors() = isactive() ? Atom.rpc("colors") : Dict()
+syntaxcolors() = isactive() ? Atom.syntaxcolors() : Dict()
 
 
 """
