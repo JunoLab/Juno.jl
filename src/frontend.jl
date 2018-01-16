@@ -55,6 +55,17 @@ other environments.
 plotsize() = Atom.plotsize()
 
 """
+    syntaxcolors(selectors = Atom.SELECTORS)::Dict{String, UInt32}
+
+Get the colors used by the current Atom theme.
+`selectors` should be a `Dict{String, Vector{String}}` which assigns a css
+selector (e.g. `syntax--julia`) to a name (e.g. `variable`).
+"""
+syntaxcolors(selectors) = isactive() ? Atom.syntaxcolors(selectors) : Dict{String, UInt32}()
+syntaxcolors() = isactive() ? Atom.syntaxcolors() : Dict{String, UInt32}()
+
+
+"""
     profiler()
 
 Show currently collected profile information as an in-editor flamechart.
