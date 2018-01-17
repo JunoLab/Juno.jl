@@ -9,7 +9,7 @@ Take care to unregister the progress bar by calling `done` on it, or use the
 `progress(f::Function)` syntax, which will handle that automatically.
 """
 function ProgressBar(;args...)
-  isactive() && Atom.Progress.ProgressBar(args...)
+  isactive() && Atom.Progress.ProgressBar(;args...)
 end
 
 """
