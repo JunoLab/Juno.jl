@@ -80,5 +80,19 @@ right_text(p, s) = isactive() && Atom.Progress.right_text(p, s)
 Show a progress metre for the given loop if possible.
 """
 macro progress(args...)
-  isactive() && Atom.Progress._progress(args...)
+  _progress(args...)
+end
+
+function _progress(ex)
+  _progress("", ex)
+end
+
+function _progress(name, ex)
+  quote
+    if isactive()
+      Atom.Progress._progress($(esc(name)), $(esc(ex)))
+    else
+      $(esc(ex))
+    end
+  end
 end
