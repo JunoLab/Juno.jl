@@ -1,6 +1,6 @@
 fade(x::String) = HTML("<span class=\"fade\">$x</span>")
 
-icon(x::String) = HTML("<span class=\".icon.icon-$x\"></span>")
+icon(x::String) = HTML("<span class=\"icon icon-$x\"></span>")
 
 function interleave(xs, j)
   ys = []
