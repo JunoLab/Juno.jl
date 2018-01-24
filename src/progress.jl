@@ -88,11 +88,9 @@ function _progress(ex)
 end
 
 function _progress(name, ex)
-  quote
-    if isactive()
-      Atom.Progress._progress($(esc(name)), $(esc(ex)))
-    else
-      $(esc(ex))
-    end
+  if isactive()
+    Atom.Progress._progress(name, ex)
+  else
+    :($(esc(ex)))
   end
 end
