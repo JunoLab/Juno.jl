@@ -28,5 +28,6 @@ include("types.jl")
 include("frontend.jl")
 include("progress.jl")
 include("user.jl")
+include("utils.jl")
 
 end # module

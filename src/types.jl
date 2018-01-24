@@ -4,7 +4,7 @@ struct Inline end
 struct Clipboard end
 
 struct Editor end
-struct Console end
+struct Console end # deprecated
 struct PlotPane end
 
 # View data structures
