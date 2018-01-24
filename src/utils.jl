@@ -1,6 +1,6 @@
 fade(x::String) = HTML("<span class=\"fade\">$x</span>")
 
-icon(x) = HTML("<span class=\".icon.icon-$x\"></span>")
+icon(x::String) = HTML("<span class=\".icon.icon-$x\"></span>")
 
 function interleave(xs, j)
   ys = []
@@ -26,3 +26,7 @@ end
 errtrace(e, trace) = trace
 
 errmsg(e) = sprint(io -> showerror(IOContext(io, limit=true), e))
+
+view(x) =
+  Dict(:type    => :html,
+       :content => stringmime(MIME"text/html"(), x))
