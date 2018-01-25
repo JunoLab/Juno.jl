@@ -2,7 +2,7 @@ __precompile__()
 
 module Juno
 
-using MacroTools, Media
+using Media
 
 import Media: render
 
@@ -24,14 +24,10 @@ frontend.
 """
 isactive() = _active
 
-
 include("types.jl")
-include("utils.jl")
 include("frontend.jl")
 include("progress.jl")
 include("user.jl")
-
-# We do this so that a shim API is provided on 0.4
-include("base/base.jl")
+include("utils.jl")
 
 end # module

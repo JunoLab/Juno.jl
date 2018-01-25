@@ -5,7 +5,6 @@ export @enter, breakpoint
 Step into the function call in `ex`.
 """
 macro enter(ex)
-  @capture(ex, f_(args__)) || error("Syntax: @enter f(...)")
   Atom.enter(ex)
 end
 
