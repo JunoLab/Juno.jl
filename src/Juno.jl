@@ -12,7 +12,7 @@ _active = false
 
 isprecompiling() = ccall(:jl_generating_output, Cint, ()) == 1
 
-activate() = !isprecompiling() && @eval using Atom
+activate() = return nothing #!isprecompiling() && @eval using Atom
 
 setactive!(active) = (global _active = active)
 
