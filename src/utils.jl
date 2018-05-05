@@ -25,7 +25,7 @@ end
 
 errtrace(e, trace) = trace
 
-errmsg(e) = sprint(io -> showerror(IOContext(io, limit=true), e))
+errmsg(e) = sprint(io -> showerror(IOContext(io, :limit => true), e))
 
 view(x) =
   Dict(:type    => :html,
