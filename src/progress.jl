@@ -88,9 +88,11 @@ function _progress(ex)
 end
 
 function _progress(name, ex)
-  if isactive()
-    Atom.Progress._progress(name, ex)
-  else
-    :($(esc(ex)))
+  quote
+    if isactive()
+      getfield(Juno, :Atom).Progress._progress($name, $(esc(ex)))
+    else
+      $(esc(ex))
+    end
   end
 end
