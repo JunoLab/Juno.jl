@@ -75,9 +75,10 @@ difference between registering a progress bar and the latest update.
 right_text(p, s) = isactive() && Atom.Progress.right_text(p, s)
 
 """
-    @progress [name] for i = ...
+    @progress [name="", threshold=0.005] for i = ...
 
-Show a progress metre for the given loop if possible.
+Show a progress meter named `name` for the given loop if possible. Update frequency
+is limited by `threshold` (one update per 0.5% of progress by default).
 """
 macro progress(args...)
   _progress(args...)
