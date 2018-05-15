@@ -83,8 +83,8 @@ macro progress(args...)
   _progress(args...)
 end
 
-_progress(ex) = _progress("", ex)
-_progress(name::AbstractString, ex) = _progress(name, 0.05, ex)
+_progress(ex) = _progress("", 0.005 ex)
+_progress(name::AbstractString, ex) = _progress(name, 0.005, ex)
 _progress(thresh::Real, ex) = _progress("", thresh, ex)
 
 
