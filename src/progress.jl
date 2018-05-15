@@ -83,14 +83,15 @@ macro progress(args...)
   _progress(args...)
 end
 
-function _progress(ex)
-  _progress("", ex)
-end
+_progress(ex) = _progress("", ex)
+_progress(name::AbstractString, ex) = _progress(name, 0.05, ex)
+_progress(thresh::Real, ex) = _progress("", thresh, ex)
 
-function _progress(name, ex)
+
+function _progress(name, thresh, ex)
   quote
     if isactive()
-      getfield(Juno, :Atom).Progress._progress($name, $(esc(ex)))
+      $(getfield(Juno, :Atom).Progress._progress(name, thresh, ex))
     else
       $(esc(ex))
     end
