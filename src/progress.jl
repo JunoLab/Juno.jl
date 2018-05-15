@@ -69,7 +69,7 @@ name(p, s) = isactive() && Atom.Progress.name(p, s)
 
 Update the string that will be displayed to the right of the progress bar.
 
-Defaults to the linearly extrpolated remaining time based upon the time
+Defaults to the linearly extrapolated remaining time based upon the time
 difference between registering a progress bar and the latest update.
 """
 right_text(p, s) = isactive() && Atom.Progress.right_text(p, s)
@@ -84,7 +84,7 @@ macro progress(args...)
   _progress(args...)
 end
 
-_progress(ex) = _progress("", 0.005 ex)
+_progress(ex) = _progress("", 0.005, ex)
 _progress(name::AbstractString, ex) = _progress(name, 0.005, ex)
 _progress(thresh::Real, ex) = _progress("", thresh, ex)
 
