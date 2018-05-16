@@ -88,13 +88,38 @@ _progress(ex) = _progress("", 0.005, ex)
 _progress(name::AbstractString, ex) = _progress(name, 0.005, ex)
 _progress(thresh::Real, ex) = _progress("", thresh, ex)
 
-
 function _progress(name, thresh, ex)
-  quote
-    if isactive()
-      $(getfield(Juno, :Atom).Progress._progress(name, thresh, ex))
-    else
-      $(esc(ex))
+  if ex.head == :for &&
+     ex.args[1].head == Symbol("=") &&
+     ex.args[2].head == :block
+    x = esc(ex.args[1].args[1])
+    range = esc(ex.args[1].args[2])
+    body = esc(ex.args[2])
+    quote
+      if isactive()
+        p = ProgressBar(name = $name)
+        progress(p, 0)
+        lastfrac = 0.0
+        try
+          range = $range
+          n = length(range)
+          for (i, $x) in enumerate(range)
+            $body
+            
+            frac = i/n
+            if frac - lastfrac > $thresh
+              progress(p, i/n)
+              lastfrac = frac
+            end
+          end
+        finally
+          done(p)
+        end
+      else
+        $(esc(ex))
+      end
     end
+  else
+    error("@progress requires a for loop")
   end
 end
