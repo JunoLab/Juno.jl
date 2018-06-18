@@ -2,7 +2,7 @@ __precompile__()
 
 module Juno
 
-using Media
+using Media, Base64
 
 import Media: render
 
