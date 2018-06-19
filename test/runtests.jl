@@ -1,5 +1,5 @@
 using Juno
-using Base.Test
+using Test
 
 @test Juno.isactive() == false
 
