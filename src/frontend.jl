@@ -52,7 +52,7 @@ notify(msg::AbstractString) = isactive() ? Main.Atom.sendnotify(msg) : info(msg)
 Get the size of Juno's plot pane in `px`. Does not yet have a fallback for
 other environments.
 """
-plotsize() = Main.Atom.plotsize()
+plotsize() = isactive() || Main.Atom.plotsize()
 
 """
     syntaxcolors(selectors = Atom.SELECTORS)::Dict{String, UInt32}
