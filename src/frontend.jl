@@ -80,8 +80,8 @@ it via `Juno.profiler()`.
 """
 macro profiler(exp)
   quote
-    Profile.clear()
-    res = @profile $(esc(exp))
+    $(Profile).clear()
+    res = $(Profile).@profile $(esc(exp))
     profiler()
     res
   end
