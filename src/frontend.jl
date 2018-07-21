@@ -8,21 +8,21 @@ Allow the user to select one of the `xs`.
 `xs` should be an iterator of strings. Currently there is no fallback in other
 environments.
 """
-selector(xs) = Atom.selector(xs)
+selector(xs) = Main.Atom.selector(xs)
 
 """
     clearconsole()
 
 Clear the console if Juno is used; does nothing otherwise.
 """
-clearconsole() = isactive() && Atom.clearconsole()
+clearconsole() = isactive() && Main.Atom.clearconsole()
 
 """
     input(prompt = "") -> "..."
 
 Prompt the user to input some text, and return it. Optionally display a prompt.
 """
-input(prompt = "") = (print(prompt); isactive() ? Atom.input() : readline())
+input(prompt = "") = (print(prompt); isactive() ? Main.Atom.input() : readline())
 
 """
     info(msg)
@@ -33,7 +33,7 @@ Show the given message in Juno's console using blue styling, or fall back to
 In a package, you can use `import Juno: info` to replace the default version
 with this one.
 """
-info(msg) = (isactive() ? Atom : Base).info(msg)
+info(msg) = (isactive() ? Main.Atom : Base).info(msg)
 
 """
     notify(msg)
@@ -44,7 +44,7 @@ Useful for signaling the end of a long running computation or similar. This
 disregards the `Notifications` setting in `julia-client`. Falls back to
 `info(msg)` in other environments.
 """
-notify(msg::AbstractString) = isactive() ? Atom.sendnotify(msg) : info(msg)
+notify(msg::AbstractString) = isactive() ? Main.Atom.sendnotify(msg) : info(msg)
 
 """
     plotsize()
@@ -52,7 +52,7 @@ notify(msg::AbstractString) = isactive() ? Atom.sendnotify(msg) : info(msg)
 Get the size of Juno's plot pane in `px`. Does not yet have a fallback for
 other environments.
 """
-plotsize() = Atom.plotsize()
+plotsize() = isactive() || Main.Atom.plotsize()
 
 """
     syntaxcolors(selectors = Atom.SELECTORS)::Dict{String, UInt32}
@@ -61,8 +61,8 @@ Get the colors used by the current Atom theme.
 `selectors` should be a `Dict{String, Vector{String}}` which assigns a css
 selector (e.g. `syntax--julia`) to a name (e.g. `variable`).
 """
-syntaxcolors(selectors) = isactive() ? Atom.syntaxcolors(selectors) : Dict{String, UInt32}()
-syntaxcolors() = isactive() ? Atom.syntaxcolors() : Dict{String, UInt32}()
+syntaxcolors(selectors) = isactive() ? Main.Atom.syntaxcolors(selectors) : Dict{String, UInt32}()
+syntaxcolors() = isactive() ? Main.Atom.syntaxcolors() : Dict{String, UInt32}()
 
 
 """
@@ -70,7 +70,7 @@ syntaxcolors() = isactive() ? Atom.syntaxcolors() : Dict{String, UInt32}()
 
 Show currently collected profile information as an in-editor flamechart.
 """
-profiler() = isactive() && Atom.Profiler.profiler()
+profiler() = isactive() && Main.Atom.Profiler.profiler()
 
 """
     @profiler
@@ -80,8 +80,8 @@ it via `Juno.profiler()`.
 """
 macro profiler(exp)
   quote
-    Profile.clear()
-    res = @profile $(esc(exp))
+    $(Profile).clear()
+    res = $(Profile).@profile $(esc(exp))
     profiler()
     res
   end
@@ -92,7 +92,7 @@ end
 
 Show currently collected profile information in tree-form. Falls back to `Profile.print()`.
 """
-profiletree() = isactive() ? Atom.Profiler.tree() : Profile.print()
+profiletree() = isactive() ? Main.Atom.Profiler.tree() : Profile.print()
 
 """
     structure(x)
@@ -103,4 +103,4 @@ method.
 For example, `structure(:(2x+1))` displays the `Expr` object with its
 `head` and `args` fields instead of printing the expression.
 """
-structure(args...) = Atom.structure(args...)
+structure(args...) = Main.Atom.structure(args...)

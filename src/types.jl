@@ -28,7 +28,7 @@ struct SubTree
   child
 end
 
-limit(s::AbstractString) = length(s) ≤ 5000 ? s : s[chr2ind(s, 1):chr2ind(s, 5000)]*"..."
+limit(s::AbstractString) = length(s) ≤ 5000 ? s : s[nextind(s, 0):prevind(s, 5000)]*"..."
 
 struct Copyable
   view

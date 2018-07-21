@@ -5,13 +5,13 @@ export @enter, breakpoint
 Step into the function call in `ex`.
 """
 macro enter(ex)
-  Atom.enter(ex)
+  Main.Atom.enter(ex)
 end
 
-breakpoint(args...) = Atom.breakpoint(args...)
+breakpoint(args...) = Main.Atom.breakpoint(args...)
 
 function connect(args...; kws...)
   activate()
-  eval(:(Atom.connect($args...; $kws...)))
+  eval(:(Main.Atom.connect($args...; $kws...)))
   return
 end

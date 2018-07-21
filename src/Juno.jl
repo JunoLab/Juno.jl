@@ -2,7 +2,7 @@ __precompile__()
 
 module Juno
 
-using Media
+using Media, Base64, Profile
 
 import Media: render
 
@@ -12,7 +12,7 @@ _active = false
 
 isprecompiling() = ccall(:jl_generating_output, Cint, ()) == 1
 
-activate() = !isprecompiling() && @eval using Atom
+activate() = return nothing #!isprecompiling() && @eval using Atom
 
 setactive!(active) = (global _active = active)
 
