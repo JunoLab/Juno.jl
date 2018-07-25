@@ -3,6 +3,8 @@ using Test
 
 @test Juno.isactive() == false
 
+@test Juno.plotsize() == [100, 100]
+
 @test_throws Exception selector(["foo", "bar", "baz"])
 
 let i = 0

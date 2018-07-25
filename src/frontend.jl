@@ -44,15 +44,14 @@ Useful for signaling the end of a long running computation or similar. This
 disregards the `Notifications` setting in `julia-client`. Falls back to
 `info(msg)` in other environments.
 """
-notify(msg::AbstractString) = isactive() ? Main.Atom.sendnotify(msg) : info(msg)
+notify(msg::AbstractString) = isactive() ? Main.Atom.sendnotify(msg) : @info(msg)
 
 """
     plotsize()
 
-Get the size of Juno's plot pane in `px`. Does not yet have a fallback for
-other environments.
+Get the size of Juno's plot pane in `px`. Returns `[100, 100]` as a fallback value.
 """
-plotsize() = isactive() || Main.Atom.plotsize()
+plotsize() = isactive() ? Main.Atom.plotsize() : [100, 100]
 
 """
     syntaxcolors(selectors = Atom.SELECTORS)::Dict{String, UInt32}
