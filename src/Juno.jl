@@ -1,5 +1,3 @@
-__precompile__()
-
 module Juno
 
 using Media, Base64, Profile
