@@ -91,9 +91,9 @@ function _progress(name, thresh, ex)
 end
 
 function _progress(name, thresh, ex, target, retval, iter_vars, ranges, body)
-  iter_exprs = [:(($(Symbol("i$k")),$(esc(v))) = enumerate($(esc(r))))
-                  for (k,(v,r)) in enumerate(zip(iter_vars,ranges))]
-  var_array_ex = Expr(:vect, (esc(v) for v in iter_vars)...)
+  count_vars = [Symbol("i$k") for k=1:length(iter_vars)]
+  iter_exprs = [:(($i,$(esc(v))) = enumerate($(esc(r))))
+                  for (i,v,r) in zip(count_vars,iter_vars,ranges)]
   _id = "progress_$(gensym())"
   quote
     if isactive()
@@ -116,7 +116,7 @@ function _progress(name, thresh, ex, target, retval, iter_vars, ranges, body)
 
         $target = $(Expr(:comprehension, Expr(:generator,
                             quote
-                              lastfrac = _update(_frac($var_array_ex),lastfrac)
+                              lastfrac = _update(_frac($(Expr(:vect, count_vars...))),lastfrac)
                               $body
                             end,
                             iter_exprs...
