@@ -99,7 +99,7 @@ function _progress(name, thresh, ex, target, result, iter_vars, ranges, body)
   quote
     if isactive()
       @logmsg($PROGRESSLEVEL, $name, progress=0.0, _id=Symbol($_id))
-      try
+      $target = try
         ranges = $(Expr(:vect,ranges...))
         nranges = length(ranges)
         lens = length.(ranges)
@@ -108,7 +108,7 @@ function _progress(name, thresh, ex, target, result, iter_vars, ranges, body)
         _frac(i) = (sum((i-1)*s for (i,s) in zip(i,strides)) + 1) / n
         lastfrac = 0.0
 
-        $target = $(Expr(:comprehension, Expr(:generator,
+        $(Expr(:comprehension, Expr(:generator,
                             quote
                               frac = _frac($(Expr(:vect, count_vars...)))
                               if frac - lastfrac > $thresh
@@ -119,10 +119,10 @@ function _progress(name, thresh, ex, target, result, iter_vars, ranges, body)
                             end,
                             iter_exprs...
                          )))
-        $result
       finally
         @logmsg($PROGRESSLEVEL, $name, progress="done", _id=Symbol($_id))
       end
+      $result
     else
       $(esc(ex))
     end
