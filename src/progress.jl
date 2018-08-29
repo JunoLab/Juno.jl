@@ -39,10 +39,12 @@ function progress(f; name = "")
 end
 
 """
-    @progress [name="", threshold=0.005] for i = ...
+    @progress [name="", threshold=0.005] for i = ..., j = ..., ...
+    @progress [name="", threshold=0.005] x = [... for i = ..., j = ..., ...]
 
-Show a progress meter named `name` for the given loop if possible. Update frequency
-is limited by `threshold` (one update per 0.5% of progress by default).
+Show a progress meter named `name` for the given loop or array comprehension
+if possible. Update frequency is limited by `threshold` (one update per 0.5% of
+progress by default).
 """
 macro progress(args...)
   _progress(args...)
@@ -53,37 +55,76 @@ _progress(name::AbstractString, ex) = _progress(name, 0.005, ex)
 _progress(thresh::Real, ex) = _progress("", thresh, ex)
 
 function _progress(name, thresh, ex)
-  if ex.head == :for &&
-     ex.args[1].head == Symbol("=") &&
-     ex.args[2].head == :block
-    x = esc(ex.args[1].args[1])
-    range = esc(ex.args[1].args[2])
+  if ex.head == Symbol("=") &&
+        ex.args[2].head == :comprehension &&
+        ex.args[2].args[1].head == :generator
+    # comprehension: <target> = [<body> for <iter_var> in <range>,...]
+    target = esc(ex.args[1])
+    result = target
+    gen_ex = ex.args[2].args[1]
+    body = esc(gen_ex.args[1])
+    iter_exprs = gen_ex.args[2:end]
+    iter_vars = [e.args[1] for e in iter_exprs]
+    ranges = [e.args[2] for e in iter_exprs]
+  elseif ex.head == :for &&
+        ex.args[1].head == Symbol("=") &&
+        ex.args[2].head == :block
+    # single-variable for: for <iter_var> = <range>; <body> end
+    target = :_
+    result = :nothing
+    iter_vars = [ex.args[1].args[1]]
+    ranges = [ex.args[1].args[2]]
     body = esc(ex.args[2])
-    _id = "progress_$(gensym())"
-    quote
-      if isactive()
-        @logmsg($PROGRESSLEVEL, $name, progress=0.0, _id=Symbol($_id))
-        try
-          lastfrac = 0.0
-          range = $range
-          n = length(range)
-          for (i, $x) in enumerate(range)
-            $body
-
-            frac = i/n
-            if frac - lastfrac > $thresh
-              @logmsg($PROGRESSLEVEL, $name, progress=frac, _id=Symbol($_id))
-              lastfrac = frac
-            end
-          end
-        finally
-          @logmsg($PROGRESSLEVEL, $name, progress="done", _id=Symbol($_id))
-        end
-      else
-        $(esc(ex))
-      end
-    end
+  elseif ex.head == :for &&
+        ex.args[1].head == :block &&
+        ex.args[2].head == :block
+    # multi-variable for: for <iter_var> = <range>,...; <body> end
+    target = :_
+    result = :nothing
+    iter_vars = [e.args[1] for e in ex.args[1].args]
+    ranges = [e.args[2] for e in ex.args[1].args]
+    body = esc(ex.args[2])
   else
-    error("@progress requires a for loop")
+    error("@progress requires a for loop (for i in irange, j in jrange, ...; <body> end) " *
+          "or array comprehension with assignment (x = [<body> for i in irange, j in jrange, ...])")
+  end
+  _progress(name, thresh, ex, target, result, iter_vars, ranges, body)
+end
+
+function _progress(name, thresh, ex, target, result, iter_vars, ranges, body)
+  count_vars = [Symbol("i$k") for k=1:length(iter_vars)]
+  iter_exprs = [:(($i,$(esc(v))) = enumerate($(esc(r))))
+                  for (i,v,r) in zip(count_vars,iter_vars,ranges)]
+  _id = "progress_$(gensym())"
+  quote
+    if isactive()
+      @logmsg($PROGRESSLEVEL, $name, progress=0.0, _id=Symbol($_id))
+      $target = try
+        ranges = $(Expr(:vect,esc.(ranges)...))
+        nranges = length(ranges)
+        lens = length.(ranges)
+        n = prod(lens)
+        strides = cumprod([1;lens[1:end-1]])
+        _frac(i) = (sum((i-1)*s for (i,s) in zip(i,strides)) + 1) / n
+        lastfrac = 0.0
+
+        $(Expr(:comprehension, Expr(:generator,
+                            quote
+                              frac = _frac($(Expr(:vect, count_vars...)))
+                              if frac - lastfrac > $thresh
+                                @logmsg($PROGRESSLEVEL, $name, progress=frac, _id=Symbol($_id))
+                                lastfrac = frac
+                              end
+                              $body
+                            end,
+                            iter_exprs...
+                         )))
+      finally
+        @logmsg($PROGRESSLEVEL, $name, progress="done", _id=Symbol($_id))
+      end
+      $result
+    else
+      $(esc(ex))
+    end
   end
 end
