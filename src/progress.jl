@@ -100,7 +100,7 @@ function _progress(name, thresh, ex, target, result, iter_vars, ranges, body)
     if isactive()
       @logmsg($PROGRESSLEVEL, $name, progress=0.0, _id=Symbol($_id))
       $target = try
-        ranges = $(Expr(:vect,ranges...))
+        ranges = $(Expr(:vect,esc.(ranges)...))
         nranges = length(ranges)
         lens = length.(ranges)
         n = prod(lens)
