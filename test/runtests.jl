@@ -36,6 +36,7 @@ let i = 0, j = 0, x
     i += 1
   end
   @test i == 200
+  @test x == nothing
 end
 
 let x,y
@@ -44,5 +45,14 @@ let x,y
   @test x == y
 end
 
+let a = [], x
+  x = @progress for i=1:3, j=[-5,-2,-1,8]
+      j > 0 && continue
+      push!(a,(i,j))
+      i > 1 && break
+  end
+  @test a == [(1,-5),(1,-2),(1,-1),(2,-5)]
+  @test x == nothing
+end
 
 @test Juno.notify("hi") == nothing
