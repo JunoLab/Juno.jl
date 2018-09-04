@@ -15,6 +15,14 @@ let i = 0, x
   @test x == nothing
 end
 
+let i = 0, r = -50:10:50, x
+  x = @progress for _ in r
+    i += 1
+  end
+  @test i == 11
+  @test x == nothing
+end
+
 let i = 0, x
   x = @progress "named" for _ = 1:100
     i += 1
