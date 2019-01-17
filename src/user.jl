@@ -5,7 +5,7 @@ export @enter, breakpoint
 Step into the function call in `ex`.
 """
 macro enter(ex)
-  Main.Atom.enter(ex)
+  Main.Atom.enter(__module__, ex)
 end
 
 breakpoint(args...) = Main.Atom.breakpoint(args...)
