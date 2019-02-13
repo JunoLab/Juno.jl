@@ -1,7 +1,12 @@
 ---
 name: Bug report
 about: Create a bug report
+title: "[BUG]"
+labels: bug
+assignees: ''
+
 ---
+
 Please search existing issues to avoid duplicates.
 
 ## Details
