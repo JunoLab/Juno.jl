@@ -39,6 +39,15 @@ let i = 0, j = 0, x
   @test x == nothing
 end
 
+let i = 0, j = 0, x
+  bar = "bar"
+  x = @progress "foo $bar" for _ = 1:10
+    i += 1
+  end
+  @test i == 10
+  @test x == nothing
+end
+
 let x,y
   x = @progress y = [i+3j for i=1:3, j=1:4]
   @test y == reshape(4:15,3,4)
