@@ -51,7 +51,7 @@ macro progress(args...)
 end
 
 _progress(ex) = _progress("", 0.005, ex)
-_progress(name::AbstractString, ex) = _progress(name, 0.005, ex)
+_progress(name::Union{AbstractString, Expr}, ex) = _progress(name, 0.005, ex)
 _progress(thresh::Real, ex) = _progress("", thresh, ex)
 
 function _progress(name, thresh, ex)
@@ -103,7 +103,7 @@ function _progress(name, thresh, ex, target, result, loop, iter_vars, ranges, bo
   _id = "progress_$(gensym())"
   quote
     if isactive()
-      @logmsg($PROGRESSLEVEL, $name, progress=0.0, _id=Symbol($_id))
+      @logmsg($PROGRESSLEVEL, $(esc(name)), progress=0.0, _id=Symbol($_id))
       $target = try
         ranges = $(Expr(:vect,esc.(ranges)...))
         nranges = length(ranges)
@@ -118,7 +118,7 @@ function _progress(name, thresh, ex, target, result, loop, iter_vars, ranges, bo
             quote
                 frac = _frac($(Expr(:vect, count_vars...)))
                 if frac - lastfrac > $thresh
-                    @logmsg($PROGRESSLEVEL, $name, progress=frac, _id=Symbol($_id))
+                    @logmsg($PROGRESSLEVEL, $(esc(name)), progress=frac, _id=Symbol($_id))
                     lastfrac = frac
                 end
                 $body
@@ -126,7 +126,7 @@ function _progress(name, thresh, ex, target, result, loop, iter_vars, ranges, bo
         ))
 
       finally
-        @logmsg($PROGRESSLEVEL, $name, progress="done", _id=Symbol($_id))
+        @logmsg($PROGRESSLEVEL, $(esc(name)), progress="done", _id=Symbol($_id))
       end
       $result
     else
