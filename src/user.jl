@@ -1,14 +1,20 @@
-export @enter, breakpoint
 """
     @enter ex
 
-Step into the function call in `ex`.
+Step into `ex`.
 """
 macro enter(ex)
   Main.Atom.enter(__module__, ex)
 end
 
-breakpoint(args...) = Main.Atom.breakpoint(args...)
+"""
+    @enter ex
+
+Step into `ex`.
+"""
+macro run(ex)
+  Main.Atom.enter(__module__, ex; initial_continue = true)
+end
 
 function connect(args...; kws...)
   activate()
