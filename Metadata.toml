@@ -1,0 +1,3 @@
+[DocumentationGenerator]
+method = "hosted"
+location = "https://docs.junolab.org/latest"
