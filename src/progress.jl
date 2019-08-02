@@ -116,12 +116,13 @@ function _progress(name, thresh, ex, target, result, loop, iter_vars, ranges, bo
 
         $(loop(iter_exprs,
             quote
+                val = $body
                 frac = _frac($(Expr(:vect, count_vars...)))
                 if frac - lastfrac > $thresh
                     @logmsg($PROGRESSLEVEL, $(esc(name)), progress=frac, _id=Symbol($_id))
                     lastfrac = frac
                 end
-                $body
+                val
             end
         ))
 
