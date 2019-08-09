@@ -76,4 +76,4 @@ a `show` method that should *not* be used by Juno:
 Juno.render(i::Juno.Inline, x::myType) = Juno.render(i, Juno.defaultrepr(x))
 ```
 """
-defaultrepr(x, lazy = false) = Atom.defaultrepr(x, lazy)
+defaultrepr(x, lazy = false) = Main.Atom.defaultrepr(x, lazy)
