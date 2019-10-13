@@ -1,8 +1,8 @@
 export @progress
 
-using Logging: @logmsg
+using Logging: @logmsg, LogLevel
 
-const PROGRESSLEVEL = -1
+const PROGRESSLEVEL = LogLevel(-1)
 
 """
     progress(f::Function; name = "", msg = "")
