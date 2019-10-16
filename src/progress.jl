@@ -14,7 +14,7 @@ like `@info` or even just `@logmsg` with `_id=id` and `progress` as arguments.
 `progress` can take either of the following values:
   - `0 <= progress < 1`: create or update progress bar
   - `progress == nothing || progress = NaN`: set progress bar to indeterminate progress
-  - `progress > 1 || progress == "done"`: destroy progress bar
+  - `progress >= 1 || progress == "done"`: destroy progress bar
 
 The logging message (e.g. `"foo"` in `@info "foo"`) will be used as the progress
 bar's name.
