@@ -6,6 +6,9 @@ import Media: render
 
 export Media, media, @render
 
+using ProgressLogging: @progress, progress
+export @progress
+
 _active = false
 
 isprecompiling() = ccall(:jl_generating_output, Cint, ()) == 1
@@ -24,7 +27,6 @@ isactive() = _active
 
 include("types.jl")
 include("frontend.jl")
-include("progress.jl")
 include("user.jl")
 include("utils.jl")
 
