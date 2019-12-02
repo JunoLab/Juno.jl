@@ -1,0 +1,39 @@
+name: SnoopCompile
+# From: https://github.com/juliamatlab/MatLang/blob/master/.github/workflows/SnoopCompile.yml
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        julia-version: [1.3.0]
+        julia-arch: [x86]
+        os: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v1
+      - uses: julia-actions/setup-julia@latest
+        with:
+          version: ${{ matrix.julia-version }}
+      - name: Install dependencies
+        run: julia --project=@. -e 'using Pkg; Pkg.instantiate();'
+      - name : Add SnoopCompile and Current Package
+        run:   julia -e 'using Pkg; Pkg.add("SnoopCompile"); Pkg.develop(PackageSpec(; path=pwd()));'     
+      - name: Generating precompile files
+        run: julia --project=@. -e 'include("deps/SnoopCompile/snoopCompile.jl")'
+
+      # https://github.com/marketplace/actions/create-pull-request
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v1.6.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMIT_MESSAGE: Update precompile_*.jl file
+          PULL_REQUEST_TITLE: '[AUTO] Update precompile_*.jl file'
+          PULL_REQUEST_LABELS: no changelog
+          PULL_REQUEST_BRANCH: create-pull-request/pkg-update
+          BRANCH_SUFFIX: none
+      - name: Check output environment variable
+        run: echo "Pull Request Number - ${{ env.PULL_REQUEST_NUMBER }}"
