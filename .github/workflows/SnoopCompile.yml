@@ -2,7 +2,7 @@ name: SnoopCompile
 
 on:
   - push
-  - pull_request
+
 
 jobs:
   build:
@@ -19,8 +19,8 @@ jobs:
           version: ${{ matrix.julia-version }}
       - name: Install dependencies
         run: julia --project=@. -e 'using Pkg; Pkg.instantiate();'
-      - name : Add SnoopCompile and Current Package
-        run:   julia -e 'using Pkg; Pkg.add("SnoopCompile"); Pkg.develop(PackageSpec(; path=pwd()));'
+      - name : Add SnoopCompile and current package
+        run: julia -e 'using Pkg; Pkg.add(PackageSpec(url = "https://github.com/aminya/SnoopCompile.jl", rev ="packageSnooper")); Pkg.develop(PackageSpec(; path=pwd()));'
       - name: Generating precompile files
         run: julia --project=@. -e 'include("deps/SnoopCompile/snoopCompile.jl")'
 
