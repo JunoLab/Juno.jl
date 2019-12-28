@@ -1,10 +1,14 @@
-using SnoopCompile, Pkg
+using SnoopCompile
 
+# using runtests:
+@snoopiBot "Juno"
+
+# if want to add examples:
+#=
+SnoopCompile.addtestdep()
 @snoopiBot "Juno" begin
   using Juno
-
-  # Use runtests.jl
-  include(joinpath(dirname(dirname(pathof(Juno))), "test", "runtests.jl"))
-
   # Ues examples
+
 end
+=#
