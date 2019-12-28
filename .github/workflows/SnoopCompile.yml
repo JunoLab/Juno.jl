@@ -19,6 +19,8 @@ jobs:
           version: ${{ matrix.julia-version }}
       - name: Install dependencies
         run: julia --project=@. -e 'using Pkg; Pkg.instantiate();'
+      - name: Install Test dependencies
+        run: julia --project=@. -e 'using Pkg; Pkg.activate("./test"); Pkg.instantiate();'
       - name : Add SnoopCompile and current package
         run: julia -e 'using Pkg; Pkg.add(PackageSpec(url = "https://github.com/aminya/SnoopCompile.jl", rev ="packageSnooper")); Pkg.develop(PackageSpec(; path=pwd()));'
       - name: Generating precompile files
