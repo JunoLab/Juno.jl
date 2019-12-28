@@ -9,21 +9,8 @@
 # restart Julia
 
 # now compare the result
-
 ################################################################
-function timesum(snoop)
-
-    timeSum = 0
-    for x in snoop
-        timeSum+=x[1]
-    end
-
-    println(timeSum)
-
-    return timeSum
-end
-################################################################
-using SnoopCompile
+using SnoopCompile, Pkg
 
 println("Package load time:")
 loadSnoop = @snoopi using Juno
@@ -36,7 +23,7 @@ runSnoop = @snoopi begin
 
 using Juno
 
-include(joinpath(dirname(dirname(pathof(Juno))), "test", "runtests.jl"))
+Pkg.test("Juno")
 
 end
 

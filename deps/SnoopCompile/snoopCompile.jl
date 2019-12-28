@@ -1,7 +1,7 @@
-using SnoopCompile
+using SnoopCompile, Pkg
 
 @snoopiBot "Juno" begin
-  using Juno, Pkg
+  using Juno
 
   # Use runtests.jl
   include(joinpath(dirname(dirname(pathof(Juno))), "test", "runtests.jl"))
