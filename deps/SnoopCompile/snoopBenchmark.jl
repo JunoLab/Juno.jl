@@ -1,30 +1,5 @@
-# dev your package
+using SnoopCompile
 
-# comment the precompile part of your package ("include() and _precompile_()")
-# run this benchmark
-# restart Julia
+println("tests infer benchmark")
 
-# uncomment the precompile part of your package ("include() and _precompile_()")
-# run this benchmark
-# restart Julia
-
-# now compare the result
-################################################################
-using SnoopCompile, Pkg
-
-println("Package load time:")
-loadSnoop = @snoopi using Juno
-
-timesum(loadSnoop)
-
-################################################################
-println("Running Examples/Tests:")
-runSnoop = @snoopi begin
-
-using Juno
-
-Pkg.test("Juno")
-
-end
-
-timesum(runSnoop)
+@snoopiBenchBot "Juno"
