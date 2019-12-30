@@ -30,12 +30,13 @@ jobs:
 
       # https://github.com/marketplace/actions/create-pull-request
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v2-alpha
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COMMIT_MESSAGE: Update precompile_*.jl file
-          PULL_REQUEST_TITLE: '[AUTO] Update precompile_*.jl file'
-          PULL_REQUEST_LABELS: SnoopCompile
-          PULL_REQUEST_BRANCH: create-pull-request/SnoopCompile
+        uses: peter-evans/create-pull-request@v2-beta
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Update precompile_*.jl file
+          # committer: Amin Yahyaabadi <aminyahyaabadi74@gmail.com>
+          title: '[AUTO] Update precompile_*.jl file'
+          labels: SnoopCompile
+          branch: create-pull-request/SnoopCompile
       - name: Check output environment variable
         run: echo "Pull Request Number - ${{ env.PULL_REQUEST_NUMBER }}"
