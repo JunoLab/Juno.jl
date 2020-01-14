@@ -18,11 +18,11 @@ jobs:
         with:
           version: ${{ matrix.julia-version }}
       - name: Install dependencies
-        run: julia --project=@. -e 'using Pkg; Pkg.instantiate();'
+        run: julia --project -e 'using Pkg; Pkg.instantiate();'
       - name : Add SnoopCompile and current package
-        run: julia -e 'using Pkg; Pkg.add(PackageSpec(url = "https://github.com/aminya/SnoopCompile.jl", rev ="packageSnooper")); Pkg.develop(PackageSpec(; path=pwd()));'
-      # - name: Install Test dependencies
-        # run: julia -e 'using SnoopCompile; SnoopCompile.addtestdep()'
+        run: julia -e 'using Pkg; Pkg.add("SnoopCompile"); Pkg.develop(PackageSpec(; path=pwd()));'
+      - name: Install Test dependencies
+        run: julia -e 'using SnoopCompile; SnoopCompile.addtestdep()'
       - name: Generating precompile files
         run: julia --project=@. -e 'include("deps/SnoopCompile/snoopCompile.jl")'
       - name: Running Benchmark
@@ -30,11 +30,11 @@ jobs:
 
       # https://github.com/marketplace/actions/create-pull-request
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v2-beta
+        uses: peter-evans/create-pull-request@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Update precompile_*.jl file
-          # committer: Amin Yahyaabadi <aminyahyaabadi74@gmail.com>
+          # committer: YOUR NAME <yourEmail@something.com> # Change `committer` to your name and your email.
           title: '[AUTO] Update precompile_*.jl file'
           labels: SnoopCompile
           branch: create-pull-request/SnoopCompile
