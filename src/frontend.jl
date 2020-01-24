@@ -65,11 +65,11 @@ syntaxcolors() = isactive() ? Main.Atom.syntaxcolors() : Dict{String, UInt32}()
 
 
 """
-    profiler()
+    profiler(data=Profile.fetch(); lidict=nothing, C=false, combine=true, recur=:off, pruned=[])
 
-Show currently collected profile information as an in-editor flamechart.
+Show profile information as an in-editor flamechart.
 """
-profiler() = isactive() && Main.Atom.Profiler.profiler()
+profiler(args...; kwargs...) = isactive() && Main.Atom.Profiler.profiler(args...; kwargs...)
 
 """
     @profiler
