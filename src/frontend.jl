@@ -65,24 +65,38 @@ syntaxcolors() = isactive() ? Main.Atom.syntaxcolors() : Dict{String, UInt32}()
 
 
 """
-    profiler()
+    profiler(data=Profile.fetch(); lidict=nothing, C=false, combine=true, recur=:off, pruned=[])
 
-Show currently collected profile information as an in-editor flamechart.
+Show profile information as an in-editor flamechart.
+Any keyword argument that [`FlameGraphs.flamegraph`](@ref) can take could be given.
 """
-profiler() = isactive() && Main.Atom.Profiler.profiler()
+profiler(args...; kwargs...) = isactive() && Main.Atom.Profiler.profiler(args...; kwargs...)
 
 """
-    @profiler
+    @profiler exp [kwargs...]
 
 Clear currently collected profile traces, profile the provided expression and show
-it via `Juno.profiler()`.
+  it via `Juno.profiler()`.
+
+Any keyword argument that [`FlameGraphs.flamegraph`](@ref) can take could be given
+  as optional arugments `kwargs...`
+
+```julia
+# profile a function call
+@profiler fname(fargs)
+
+# include ccalls and compress recursive calls
+@profiler fname(fargs) C = true recur = :flat
+```
 """
-macro profiler(exp)
+macro profiler(exp, kwargs...)
   quote
-    $(Profile).clear()
-    res = $(Profile).@profile $(esc(exp))
-    profiler()
-    res
+    let
+      $(Profile).clear()
+      res = $(Profile).@profile $(esc(exp))
+      profiler(; $(map(esc, kwargs)...))
+      res
+    end
   end
 end
 
