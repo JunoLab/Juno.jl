@@ -3,13 +3,12 @@ name: SnoopCompile
 on:
   - push
 
-
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        julia-version: ['nightly']
+        julia-version: ['1.4.0-rc1']
         julia-arch: [x64]
         os: [ubuntu-latest]
     steps:
