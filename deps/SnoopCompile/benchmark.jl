@@ -2,4 +2,4 @@ using SnoopCompile
 
 println("tests infer benchmark")
 
-@snoopiBench "Juno"
+@snoopi_bench "Juno"
