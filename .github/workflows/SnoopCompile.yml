@@ -1,7 +1,10 @@
 name: SnoopCompile
 
 on:
-  - push
+  push:
+    # TODO: remove this once we enable precompilations
+    branches:
+      - master
 
 jobs:
   build:
@@ -16,25 +19,29 @@ jobs:
       - uses: julia-actions/setup-julia@latest
         with:
           version: ${{ matrix.julia-version }}
-      - name: Install dependencies
-        run: julia --project -e 'using Pkg; Pkg.instantiate();'
-      - name : Add SnoopCompile and current package
-        run: julia -e 'using Pkg; Pkg.add("SnoopCompile"); Pkg.develop(PackageSpec(; path=pwd()));'
-      - name: Install Test dependencies
-        run: julia -e 'using SnoopCompile; SnoopCompile.addtestdep()'
+      - name: Instantiate target package
+        run: julia --project=@. -e 'using Pkg; Pkg.instantiate();'
+      - name: Install SnoopCompile and test dependencies
+        run: |
+          julia -e '
+          using Pkg
+          Pkg.develop(PackageSpec(; path=pwd()))
+          Pkg.add("SnoopCompile")
+          using SnoopCompile
+          SnoopCompile.addtestdep()'
       - name: Generating precompile files
-        run: julia --project=@. -e 'include("deps/SnoopCompile/compile.jl")'
+        run: julia --project=@. deps/SnoopCompile/compile.jl
       - name: Running Benchmark
-        run: julia --project=@. -e 'include("deps/SnoopCompile/benchmark.jl")'
+        run: julia --project=@. deps/SnoopCompile/benchmark.jl
 
       # https://github.com/marketplace/actions/create-pull-request
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: Update precompile_*.jl file
+          commit-message: Update precompile_Juno.jl file
           # committer: YOUR NAME <yourEmail@something.com> # Change `committer` to your name and your email.
-          title: '[AUTO] Update precompile_*.jl file'
+          title: 'SnoopCompile: Update precompile_Juno.jl file'
           labels: SnoopCompile
           branch: create-pull-request/SnoopCompile
       - name: Check output environment variable
