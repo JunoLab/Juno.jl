@@ -30,7 +30,7 @@ include("utils.jl")
 
 
 # precompile
-# include("../deps/SnoopCompile/precompile/precompile_Juno.jl")
-# _precompile_()
+include("../deps/SnoopCompile/precompile/precompile_Juno.jl")
+_precompile_()
 
 end # module
