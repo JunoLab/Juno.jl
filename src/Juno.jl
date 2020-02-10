@@ -28,9 +28,7 @@ include("progress.jl")
 include("user.jl")
 include("utils.jl")
 
-
-# precompile
-# include("../deps/SnoopCompile/precompile/precompile_Juno.jl")
-# _precompile_()
+include("precompile.jl")
+_precompile_()
 
 end # module
