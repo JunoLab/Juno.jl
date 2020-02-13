@@ -1,0 +1,18 @@
+function _precompile_()
+    ccall(:jl_generating_output, Cint, ()) == 1 || return nothing
+    isdefined(Juno, Symbol("#3#7")) && precompile(Tuple{getfield(Juno, Symbol("#3#7")),Expr})
+    isdefined(Juno, Symbol("#4#8")) && precompile(Tuple{getfield(Juno, Symbol("#4#8")),Expr})
+    isdefined(Juno, Symbol("#5#9")) && precompile(Tuple{getfield(Juno, Symbol("#5#9")),Expr})
+    isdefined(Juno, Symbol("#6#10")) && precompile(Tuple{getfield(Juno, Symbol("#6#10")),Expr})
+    precompile(Tuple{typeof(Juno._progress),Expr,Expr})
+    precompile(Tuple{typeof(Juno._progress),Expr,Float64,Expr,Symbol,Symbol,typeof(Juno._for),Array{Symbol,1},Array{Expr,1},Expr})
+    precompile(Tuple{typeof(Juno._progress),Expr})
+    precompile(Tuple{typeof(Juno._progress),String,Expr})
+    precompile(Tuple{typeof(Juno._progress),String,Float64,Expr,Expr,Expr,typeof(Juno._comprehension),Array{Symbol,1},Array{Expr,1},Expr})
+    precompile(Tuple{typeof(Juno._progress),String,Float64,Expr,Symbol,Symbol,typeof(Juno._for),Array{Symbol,1},Array{Expr,1},Expr})
+    precompile(Tuple{typeof(Juno._progress),String,Float64,Expr,Symbol,Symbol,typeof(Juno._for),Array{Symbol,1},Array{Symbol,1},Expr})
+    precompile(Tuple{typeof(Juno.isactive)})
+    precompile(Tuple{typeof(Juno.notify),String})
+    precompile(Tuple{typeof(Juno.plotsize)})
+    precompile(Tuple{typeof(selector),Array{String,1}})
+end
