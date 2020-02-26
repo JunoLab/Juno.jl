@@ -101,13 +101,6 @@ macro profiler(exp, kwargs...)
 end
 
 """
-    profiletree()
-
-Show currently collected profile information in tree-form. Falls back to `Profile.print()`.
-"""
-profiletree() = isactive() ? Main.Atom.Profiler.tree() : Profile.print()
-
-"""
     structure(x)
 
 Display `x`'s underlying representation, rather than using its normal display
