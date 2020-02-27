@@ -1,4 +1,4 @@
-export selector, clearconsole, input, structure, @sh, @profiler
+export selector, clearconsole, input, structure, @profiler
 
 """
     selector([xs...]) -> x
