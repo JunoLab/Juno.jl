@@ -1,12 +1,5 @@
 using Pkg
 
-# blacklist
-# ---------
-
-# update when an assertion fails
-blacklist = [
-]
-
 # add dependencies
 # ----------------
 
@@ -57,11 +50,9 @@ try
                 println(io, "    ccall(:jl_generating_output, Cint, ()) == 1 || return nothing")
                 for stmt in sort(stmts)
                     if startswith(stmt, "isdefined")
-                        println(io, "    ", stmt) # don't asset on this
-                    elseif stmt in blacklist
-                        println(io, "    # @assert ", stmt) # comment out blacklist
+                        println(io, "    try; $stmt; catch err; @debug err; end") # don't assert on this
                     else
-                        println(io, "    @assert ", stmt)
+                        println(io, "    try; @assert $stmt; catch err; @debug err; end")
                     end
                 end
                 println(io, "end")
@@ -88,27 +79,25 @@ try
         end
         @debug "Commented in `_precompile_` call in $junojl_file for `precompile` statement assertion"
 
-        err_io = IOBuffer()
-        run(pipeline(`julia --project=. --color=yes -e 'using Pkg; Pkg.precompile()'`; stderr = err_io))
-        err = String(take!(err_io))
-        if occursin("ERROR", err)
-            printstyled(
-                "An invalid `precompile` statement has been generated:\n";
-                bold = true, color = :lightred
-            )
-            @error err
-        else
-            printstyled(
-                "Asserted all the `precompile` statements. You're good to call `_precompile_` for now.\n";
-                bold = true, color = :lightgreen
-            )
-        end
+        run(pipeline(`julia --project=. --color=yes -e '
+            ENV["JULIA_DEBUG"] = "Juno"
+            using Juno # should invoke precompile
+        '`))
     catch e
         printstyled(
             "`precompile` statement assertion failed with the following error:\n";
             bold = true, color = :lightred
         )
         @error e
+    finally
+        # let lines = readlines(precompile_file; keep = true)
+        #     open(precompile_file, "w") do io
+        #         for line in lines
+        #             write(io, replace(line, "@assert " => ""))
+        #         end
+        #     end
+        # end
+        # @info "Removed `@assert`s in $precompile_file"
     end
 catch e
     printstyled(

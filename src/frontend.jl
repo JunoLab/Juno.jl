@@ -1,4 +1,4 @@
-export selector, clearconsole, input, structure, @sh, @profiler
+export selector, clearconsole, input, structure, @profiler
 
 """
     selector([xs...]) -> x
@@ -99,13 +99,6 @@ macro profiler(exp, kwargs...)
     end
   end
 end
-
-"""
-    profiletree()
-
-Show currently collected profile information in tree-form. Falls back to `Profile.print()`.
-"""
-profiletree() = isactive() ? Main.Atom.Profiler.tree() : Profile.print()
 
 """
     structure(x)
