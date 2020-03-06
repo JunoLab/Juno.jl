@@ -2,6 +2,8 @@
 
 ## What to present
 
+NOTE: [Juno 1.0 Project](./juno1.0-project.md) summarizes what we will do for Juno 1.0.
+
 My current plan of the presentation consists of two parts:
 
 1. Showcase improvements/features
@@ -53,6 +55,8 @@ We also plan to describe our approach to solve the difficult problems and implem
 (1272/2500 chars)
 
 ### Notes (optional)
+
+[Juno 1.0 Project](./juno1.0-project.md) describes our current plan for this project in details.
 
 ### Talk image (optional)
 
