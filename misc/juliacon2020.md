@@ -15,7 +15,7 @@ Our current plan of the presentation consists of two parts:
 - In this part, I would like to explain how we solve/implement problems and features; it can help other existing coding environments improve or encourage someone to create another Juno-like tool, or back to our project, attract future contributors and make it easier for them to contribute to Juno
 - Possible presentation flow:
   * How to separate Juno packages from user's environment: maybe help julia-vscode extension, for example
-  * How to implement linter/refactor using both static code analysis and user runtime info: if we can implement "good" features using information that lives in user's runtime, it will show the benefits of Juno's approach in comparison to an ordinal IDE approach based on static code analysis 
+  * How to implement linter/refactor using both static code analysis and user runtime info: if we can implement "good" features using information that lives in user's runtime, it will show the benefits of Juno's approach in comparison to an ordinal IDE approach based on static code analysis
 - As the above bullet implies, this part will be of much interest of tooling developers
 
 So I think the 2 parts will address interests of the Julia community as a whole.
@@ -38,7 +38,7 @@ Talk
 
 ### Abstract
 
-We will introduce Juno 1.0 -- show how it will get rid of the longstanding issues and bring us huge productivity boosts. 
+We will introduce Juno 1.0 -- show how it will get rid of the longstanding issues and bring us huge productivity boosts.
 Juno's unique approach allows IDE features to be implemented simply but yet effectively, using the power of user runtime.
 
 (243/500 chars)
