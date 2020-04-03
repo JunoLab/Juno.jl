@@ -19,10 +19,21 @@ end
 """
     @trace ex
 
-Analyse `ex` for type instabilities using Traceur.jl.
+Analyse `ex` for type instabilities using [Traceur.jl](https://github.com/JunoLab/Traceur.jl).
+
+!!! warning
+    You need to first run `using Traceur` before using this macro.
 """
 macro trace(ex, args...)
-  Main.Atom.trace(ex, args...)
+  return if isdefined(Main.Atom,  :trace)
+    Main.Atom.trace(ex, args...)
+  else
+    @warn """
+    You haven't loaded Traceur package into this running session.
+    Run `using Traceur` first and use this macro again.
+    """
+    :($(esc(ex)))
+  end
 end
 
 function connect(args...; kws...)
