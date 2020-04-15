@@ -24,6 +24,7 @@ jobs:
         exclude:
           - os: macOS-latest
             arch: x86
+      fail-fast: false # don't stop CI even when one of them fails
     steps:
       - uses: actions/checkout@v2
       - uses: julia-actions/setup-julia@v1
