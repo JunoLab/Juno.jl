@@ -8,12 +8,13 @@ jobs:
   test:
     name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }}
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.allow-failure }}
     strategy:
+      fail-fast: false # don't stop CI even when one of them fails
       matrix:
         version:
           - '1.4' # current stable
           - '1.0' # lts
-          - 'nightly'
         os:
           - ubuntu-latest
           - macOS-latest
@@ -21,10 +22,32 @@ jobs:
         arch:
           - x64
           - x86
+        allow-failure: [false]
+        include:
+          # this is so verbose... any other way to simplify this ?
+          - version: 'nightly'
+            os: ubuntu-latest
+            arch: x64
+            allow-failure: true
+          - version: 'nightly'
+            os: ubuntu-latest
+            arch: x86
+            allow-failure: true
+          - version: 'nightly'
+            os: macOS-latest
+            arch: x64
+            allow-failure: true
+          - version: 'nightly'
+            os: windows-latest
+            arch: x64
+            allow-failure: true
+          - version: 'nightly'
+            os: windows-latest
+            arch: x86
+            allow-failure: true
         exclude:
           - os: macOS-latest
             arch: x86
-      fail-fast: false # don't stop CI even when one of them fails
     steps:
       - uses: actions/checkout@v2
       - uses: julia-actions/setup-julia@v1
