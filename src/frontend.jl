@@ -25,26 +25,39 @@ Prompt the user to input some text, and return it. Optionally display a prompt.
 input(prompt = "") = (print(prompt); isactive() ? Main.Atom.input() : readline())
 
 """
-    info(msg)
-
-Show the given message in Juno's console using blue styling, or fall back to
-`Base.info`.
-
-In a package, you can use `import Juno: info` to replace the default version
-with this one.
-"""
-info(msg) = (isactive() ? Main.Atom : Base).info(msg)
-
-"""
-    notify(msg)
+    notify(msg::AbstractString)
 
 Display `msg` as an OS specific notification.
 
 Useful for signaling the end of a long running computation or similar. This
 disregards the `Notifications` setting in `julia-client`. Falls back to
-`info(msg)` in other environments.
+`@info(msg)` in other environments.
 """
 notify(msg::AbstractString) = isactive() ? Main.Atom.sendnotify(msg) : @info(msg)
+
+"""
+    notification(message::AbstractString; kind = :Info, options = Dict())
+
+Adds an notification via Atom's builtin notification system.
+`message` and `options` serves same as described in [`NotificationManager` API](https://flight-manual.atom.io/api/v1.46.0/NotificationManager/#instance-addSuccess),
+while `kind` specifies which kind of notification will be used as follows:
+```js
+atom.notifications[`add\${kind}`](message, options)
+```
+
+Falls back to `@info(message)` in other environments.
+"""
+function notification(message::AbstractString; kind = :Info, options = Dict())
+  if isactive()
+    Main.Atom.sendnotification(message; kind = kind, options = options)
+  else
+    kind = string(kind)
+    occursin(r"warn"i, kind) ? @warn(msg) :
+    occursin(r"error"i, kind) ? @error(msg) :
+    @info(msg)
+  end
+end
+
 
 """
     plotsize()
