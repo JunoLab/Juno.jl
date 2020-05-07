@@ -28,10 +28,13 @@ macro trace(ex, args...)
   return if isdefined(Main.Atom,  :trace)
     Main.Atom.trace(ex, args...)
   else
-    @warn """
-    You haven't loaded Traceur package into this running session.
-    Run `using Traceur` first and use this macro again.
-    """
+    notification("`Juno.@trace`"; kind = :Warning, options = (
+      dismissable = true,
+      description = """
+      You haven't loaded [Traceur package](https://github.com/JunoLab/Traceur.jl) into this running session.
+      Run `using Traceur` first and use this macro again.
+      """
+    ))
     :($(esc(ex)))
   end
 end
