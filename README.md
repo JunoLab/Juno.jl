@@ -1,5 +1,9 @@
 # Juno.jl
 
+**Attention**: We have decided to join forces with the [Julia extension for VSCode](https://github.com/julia-vscode/julia-vscode). As such, this Atom-based plugin is effectively in “maintenance-only mode” and we expect to only work on bug fixes in the future.
+
+----
+
 [![Build Status](https://travis-ci.org/JunoLab/Juno.jl.svg?branch=master)](https://travis-ci.org/JunoLab/Juno.jl) [![Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://JunoLab.github.io/JunoDocs.jl/latest)
 
 This package defines [Juno](http://junolab.org/)'s frontend API (to install Juno, follow the instructions [here](http://docs.junolab.org/latest/man/installation)). It is aimed primarily at allowing package authors to:
