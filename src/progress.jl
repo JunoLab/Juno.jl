@@ -98,7 +98,7 @@ end
 
 function _progress(name, thresh, ex, target, result, loop, iter_vars, ranges, body)
   count_vars = [Symbol("i$k") for k=1:length(iter_vars)]
-  iter_exprs = [:(($i,$(esc(v))) = enumerate($(esc(r))))
+  iter_exprs = [:(($i,$(esc(v))) = pairs($(esc(r))))
                   for (i,v,r) in zip(count_vars,iter_vars,ranges)]
   _id = "progress_$(gensym())"
   quote
@@ -107,10 +107,11 @@ function _progress(name, thresh, ex, target, result, loop, iter_vars, ranges, bo
       $target = try
         ranges = $(Expr(:vect,esc.(ranges)...))
         nranges = length(ranges)
+        starts = firstindex.(ranges)
         lens = length.(ranges)
         n = prod(lens)
         strides = cumprod([1;lens[1:end-1]])
-        _frac(i) = (sum((i-1)*s for (i,s) in zip(i,strides)) + 1) / n
+        _frac(i) = (sum((i-j)*s for (i,j,s) in zip(i,starts,strides)) + 1) / n
         lastfrac = 0.0
 
 
