@@ -2,17 +2,17 @@
 
 function _precompile_()
     ccall(:jl_generating_output, Cint, ()) == 1 || return nothing
-    try; @assert Base.precompile(Tuple{typeof(Juno._progress),Expr,Expr}); catch err; @debug err; end
-    try; @assert Base.precompile(Tuple{typeof(Juno._progress),Expr,Float64,Expr,Symbol,Symbol,typeof(Juno._for),Array{Symbol,1},Array{Expr,1},Expr}); catch err; @debug err; end
-    try; @assert Base.precompile(Tuple{typeof(Juno._progress),Expr}); catch err; @debug err; end
-    try; @assert Base.precompile(Tuple{typeof(Juno._progress),String,Expr}); catch err; @debug err; end
-    try; @assert Base.precompile(Tuple{typeof(Juno._progress),String,Float64,Expr,Expr,Expr,typeof(Juno._comprehension),Array{Symbol,1},Array{Expr,1},Expr}); catch err; @debug err; end
-    try; @assert Base.precompile(Tuple{typeof(Juno._progress),String,Float64,Expr,Symbol,Symbol,typeof(Juno._for),Array{Symbol,1},Array{Expr,1},Expr}); catch err; @debug err; end
-    try; @assert Base.precompile(Tuple{typeof(Juno._progress),String,Float64,Expr,Symbol,Symbol,typeof(Juno._for),Array{Symbol,1},Array{Symbol,1},Expr}); catch err; @debug err; end
-    try; @assert Base.precompile(Tuple{typeof(Juno.isactive)}); catch err; @debug err; end
-    try; @assert Base.precompile(Tuple{typeof(Juno.notify),String}); catch err; @debug err; end
-    try; @assert Base.precompile(Tuple{typeof(Juno.plotsize)}); catch err; @debug err; end
-    try; @assert Base.precompile(Tuple{typeof(selector),Array{String,1}}); catch err; @debug err; end
+    try; @assert(Base.precompile(Tuple{typeof(Juno._progress),Expr,Expr})); catch err; @debug err; end
+    try; @assert(Base.precompile(Tuple{typeof(Juno._progress),Expr,Float64,Expr,Symbol,Symbol,typeof(Juno._for),Vector{Symbol},Vector{Expr},Expr})); catch err; @debug err; end
+    try; @assert(Base.precompile(Tuple{typeof(Juno._progress),Expr})); catch err; @debug err; end
+    try; @assert(Base.precompile(Tuple{typeof(Juno._progress),String,Expr})); catch err; @debug err; end
+    try; @assert(Base.precompile(Tuple{typeof(Juno._progress),String,Float64,Expr,Expr,Expr,typeof(Juno._comprehension),Vector{Symbol},Vector{Expr},Expr})); catch err; @debug err; end
+    try; @assert(Base.precompile(Tuple{typeof(Juno._progress),String,Float64,Expr,Symbol,Symbol,typeof(Juno._for),Vector{Symbol},Vector{Expr},Expr})); catch err; @debug err; end
+    try; @assert(Base.precompile(Tuple{typeof(Juno._progress),String,Float64,Expr,Symbol,Symbol,typeof(Juno._for),Vector{Symbol},Vector{Symbol},Expr})); catch err; @debug err; end
+    try; @assert(Base.precompile(Tuple{typeof(Juno.isactive)})); catch err; @debug err; end
+    try; @assert(Base.precompile(Tuple{typeof(Juno.notify),String})); catch err; @debug err; end
+    try; @assert(Base.precompile(Tuple{typeof(Juno.plotsize)})); catch err; @debug err; end
+    try; @assert(Base.precompile(Tuple{typeof(selector),Vector{String}})); catch err; @debug err; end
     try; isdefined(Juno, Symbol("#4#8")) && Base.precompile(Tuple{getfield(Juno, Symbol("#4#8")),Expr}); catch err; @debug err; end
     try; isdefined(Juno, Symbol("#5#9")) && Base.precompile(Tuple{getfield(Juno, Symbol("#5#9")),Expr}); catch err; @debug err; end
     try; isdefined(Juno, Symbol("#6#10")) && Base.precompile(Tuple{getfield(Juno, Symbol("#6#10")),Expr}); catch err; @debug err; end
