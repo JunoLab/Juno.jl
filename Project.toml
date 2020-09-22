@@ -13,7 +13,8 @@ Media = "0.5"
 julia = "0.7, 1"
 
 [extras]
+OffsetArrays = "6fe1bfb0-de20-5000-8ca7-80f57d26f881"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test"]
+test = ["Test", "OffsetArrays"]

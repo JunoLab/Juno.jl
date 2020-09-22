@@ -1,5 +1,6 @@
 using Juno
 using Test
+using OffsetArrays
 
 @test Juno.isactive() == false
 
@@ -63,5 +64,32 @@ let a = [], x
   @test a == [(1,-5),(1,-2),(1,-1),(2,-5)]
   @test x == nothing
 end
+
+let off1 = -2, off2 = 21
+  v1 = OffsetArray(1:3, off1)
+  v2 = OffsetArray(-1:1, off2)
+  x = @progress y = [i*j for i in v1, j in v2]
+  @test x == y == OffsetArray([-1 0 1; -2 0 2; -3 0 3], off1, off2)
+end
+
+# non-indexable iterables with axes
+let r = 1:5
+  x1 = @progress y1 = [i for i in (x^2 for x in r)]
+  x2 = @progress y2 = [i for i in zip(r,r)]
+  @test x1 == y1 == r.^2
+  @test x2 == y2 == collect(zip(r,r))
+  
+  y1, y2 = [], []
+  x1 = @progress for i in (x^2 for x in r)
+    push!(y1, i)
+  end
+  x2 = @progress for i in zip(r,r)
+    push!(y2, i)
+  end
+  @test x1 == x2 == nothing
+  @test y1 == r.^2
+  @test y2 == collect(zip(r,r))
+end
+
 
 @test Juno.notify("hi") == nothing
